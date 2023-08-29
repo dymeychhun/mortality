@@ -18,7 +18,31 @@
     </button>
     </div>
     <div class="modal-body">
-    <p>One fine body…</p>
+    <div class="row">
+        <div class="form-group col-md-6">
+        <label>Patient ID</label>
+        <input type="text" class="form-control">
+        </div>
+        <div class="form-group col-md-6">
+        <label>DOB</label>
+        <input type="date" class="form-control">
+        </div>
+        <div class="form-group col-md-6">
+            <label>Sex</label>
+            <select name="" id="" class="form-control">
+                <option selected="selected"></option>
+                <option value="female">F</option>
+                <option value="male">M</option>
+            </select>
+        </div>
+        <div class="form-group col-md-6">
+            <label>Province</label>
+            <select name="" id="" class="form-control">
+                <option selected="selected"></option>
+                <option value="female">F</option>
+            </select>
+        </div>
+    </div>
     </div>
     <div class="modal-footer justify-content-between">
     <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
@@ -137,6 +161,7 @@
       "autoWidth": false,
       "responsive": true,
     });
+
   });
 
 </script>
