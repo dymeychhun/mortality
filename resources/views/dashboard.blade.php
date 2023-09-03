@@ -3,50 +3,208 @@
 @section('title', 'Dashboard')
 
 @section('content_header')
+<div class="row">
+<div class="col-md-12">
+    <div class="alert alert-info" role="alert">
+        <i class="fas fa-sync fa-spin"></i> Last updated: 08.08.2023
+      </div>
+</div>
+</div>
     <h1>Dashboard</h1>
 @stop
 
 @section('content')
 {{-- Add Modal --}}
+@php
+    $yns = ['Y','N'];
+    $sex = ['male','female'];
+@endphp
 <div class="modal fade" id="modal-xl" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
     <div class="modal-content">
-    <div class="modal-header">
+    <div class="modal-header bg-rainbow">
     <h4 class="modal-title">Add New</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">×</span>
     </button>
     </div>
     <div class="modal-body">
+    <form action="/dashboard" method="POST" id="fmdata">
+    @csrf
     <div class="row">
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
         <label>Patient ID</label>
-        <input type="text" class="form-control">
+        <input type="text" class="form-control" id="pid" name="pid">
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
         <label>DOB</label>
-        <input type="date" class="form-control">
+        <input type="date" class="form-control" id="dob" name="dob">
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label>Sex</label>
-            <select name="" id="" class="form-control">
+            <select name="sex" id="sex" class="form-control">
                 <option selected="selected"></option>
-                <option value="female">F</option>
-                <option value="male">M</option>
+                @foreach ($sex as $sexs)
+                <option value="{{ $sexs }}">{{ $sexs }}</option>
+                @endforeach
             </select>
         </div>
-        <div class="form-group col-md-6">
+        <div class="form-group col-md-4">
             <label>Province</label>
-            <select name="" id="" class="form-control">
+            <select name="province" id="province" class="form-control">
                 <option selected="selected"></option>
-                <option value="female">F</option>
+                @foreach ($provinces as $province)
+                <option value="{{ $province }}">{{ $province }}</option>
+                @endforeach
             </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Date/Time of admission</label>
+            <input type="datetime-local" class="form-control" id="doa" name="doa">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Date/Time of Death</label>
+            <input type="datetime-local" class="form-control" id="dod" name="dod">
+        </div>
+        <div class="form-group col-md-4">
+            @php
+                $ward = ['ER','PICU','NICU','SCBU','ICU'];
+            @endphp
+            <label>Ward</label>
+            <select name="ward" id="ward" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($ward as $wards)
+                <option value="{{ $wards }}">{{ $wards }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Dead on arrival?</label>
+            <select name="deoa" id="deoa" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Cause of death</label>
+            <input type="text" class="form-control" id="cod" name="cod">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Chronic illness?</label>
+            <select name="cil" id="cil" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>What chronic illness?</label>
+            <input type="text" class="form-control" id="whci" name="whci">
+        </div>
+        <div class="form-group col-md-4">
+            <label>HCAI</label>
+            <select name="hcai" id="hcai" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>HCAI from where?</label>
+            <input type="text" class="form-control" id="hcaiw" name="hcaiw">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Late presentation?</label>
+            <select name="lap" id="lap" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Palliative care?</label>
+            <select name="pac" id="pac" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Medical error?</label>
+            <select name="mede" id="mede" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>What medical error?</label>
+            <input type="text" class="form-control" id="whmede" name="whmede">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Ventilation?</label>
+            <select name="ven" id="ven" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Ventilated (days)</label>
+            <input type="text" class="form-control" id="vent" name="vent">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Inotropes?</label>
+            <select name="inot" id="inot" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Inotropes (hours)</label>
+            <input type="text" class="form-control" id="inoth" name="inoth">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Surgery?</label>
+            <select name="surg" id="surg" class="form-control">
+                <option selected="selected"></option>
+                @foreach ($yns as $yn)
+                <option value="{{ $yn }}">{{ $yn }}</option>
+                @endforeach
+            </select>
+        </div>
+        <div class="form-group col-md-4">
+            <label>Date of surgery</label>
+            <input type="date" class="form-control" id="dos" name="dos">
+        </div>
+        <div class="form-group col-md-4">
+            <label>Type of surgery</label>
+            <input type="text" class="form-control" id="tos" name="tos">
+        </div>
+        <div class="form-group col-md-6">
+            <label>Gestation (weeks): neonates only</label>
+            <input type="text" class="form-control" id="ges" name="ges">
+        </div>
+        <div class="form-group col-md-6">
+            <label>Birthweight (Kg): neonates only</label>
+            <input type="number" class="form-control" id="birthw" name="birthw">
         </div>
     </div>
+</form>
     </div>
     <div class="modal-footer justify-content-between">
     <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
-    <button type="submit" class="btn btn-outline-success">Save</button>
+    <button type="submit" class="btn btn-outline-success" form="fmdata">Save</button>
     </div>
     </div>
     
@@ -161,8 +319,32 @@
       "autoWidth": false,
       "responsive": true,
     });
-
+    
   });
+$(document).ready(function() {
+    $('#fmdata').submit(function(e) {
+        e.preventDefault();
+
+        $.ajax({
+            url: "{{ route('store.data') }}",
+            type: "POST",
+            data: $(this).serialize(),
+            success: function(response) {
+                // Handle the success response
+                $('#fmdata')[0].reset();
+                $('#modal-xl').modal('hide');
+                alert(response.message);
+            },
+            error: function(xhr) {
+                // Handle the error response
+                var errors = xhr.responseJSON.errors;
+                $.each(errors, function(key, value) {
+                    alert(value[0]);
+                });
+            }
+        });
+    });
+});
 
 </script>
 @stop

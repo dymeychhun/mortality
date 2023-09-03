@@ -1,0 +1,7 @@
+.bg-rainbow{
+    background-image: linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+    background-image: -moz-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+    background-image: -o-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+    background-image: -webkit-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+    background-image: -ms-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+}

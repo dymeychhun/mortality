@@ -2,6 +2,8 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\HomeController;
+use App\Http\Controllers\PatientController;
 
 /*
 |--------------------------------------------------------------------------
@@ -20,8 +22,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard', [App\Http\Controllers\HomeController::class, 'index'])->name('dashboard');
+Route::get('/dashboard',  'App\Http\Controllers\HomeController@index')->name('dashboard');
 
 Route::get('/analysis/total_deaths', function(){
     return view('analysis.total_deaths');
 });
+Route::post('/dashboard', 'App\Http\Controllers\PatientController@storeData')->name('store.data');
