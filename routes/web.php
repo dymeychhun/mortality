@@ -22,9 +22,9 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/dashboard',  'App\Http\Controllers\HomeController@index')->name('dashboard');
+Route::get('/dashboard',  'App\Http\Controllers\PatientController@index')->name('dashboard');
 
 Route::get('/analysis/total_deaths', function(){
     return view('analysis.total_deaths');
 });
-Route::post('/dashboard', 'App\Http\Controllers\PatientController@storeData')->name('store.data');
+Route::post('/dashboard', 'App\Http\Controllers\PatientController@store')->name('store.data');

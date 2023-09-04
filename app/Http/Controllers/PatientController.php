@@ -7,9 +7,14 @@ use Illuminate\Http\Request;
 
 class PatientController extends Controller
 {
-public function storeData(Request $request)
+
+public function index(){
+    $patient_info = patient::all();
+    return view('dashboard', compact('patient_info'));
+}
+
+public function store(Request $request)
 {
-    // Validate the request data
     $validatedData = $request->validate([
         'pid' => 'required',
         'dob' => 'required|date',
@@ -21,56 +26,56 @@ public function storeData(Request $request)
         'deoa' => 'required',
         'cod' => 'required',
         'cil' => 'required',
-        'whci' => 'required_if:cil,Y',
+        'whci' => 'nullable|required_if:cil,Y',
         'hcai' => 'required',
-        'hcaiw' => 'required_if:hcai,Y',
+        'hcaiw' => 'nullable|required_if:hcai,Y',
         'lap' => 'required',
         'pac' => 'required',
         'mede' => 'required',
-        'whmede' => 'required_if:mede,Y',
+        'whmede' => 'nullable|required_if:mede,Y',
         'ven' => 'required',
-        'vent' => 'required_if:vens,Y',
+        'vent' => 'nullable|required_if:ven,Y',
         'inot' => 'required',
-        'inoth' => 'required_if:inot,Y',
+        'inoth' => 'nullable|required_if:inot,Y',
         'surg' => 'required',
-        'dos' => 'required_if:surg,Y|date',
-        'tos' => 'required_if:surg,Y',
-        'ges' => 'required_if:sex,female|numeric',
-        'birthw' => 'required_if:sex,female|numeric',
+        'dos' => 'nullable|date|required_if:surg,Y',
+        'tos' => 'nullable|required_if:surg,Y',
+        'ges' => 'nullable|integer',
+        'birthw' => 'nullable|numeric',
     ]);
 
-    // Store the validated data in the database
-    // Your code to store the data goes here
-    $patient = new patient;
-    $patient->pid = $validatedData['pid'];
-    $patient->dob = $validatedData['dob'];
-    $patient->sex = $validatedData['sex'];
-    $patient->province = $validatedData['province'];
-    $patient->doa = $validatedData['doa'];
-    $patient->dod = $validatedData['dod'];
-    $patient->ward = $validatedData['ward'];
-    $patient->deoa = $validatedData['deoa'];
-    $patient->cod = $validatedData['cod'];
-    $patient->cil = $validatedData['cil'];
-    $patient->whci = $validatedData['whci'];
-    $patient->hcai = $validatedData['hcai'];
-    $patient->hcaiw = $validatedData['hcaiw'];
-    $patient->lap = $validatedData['lap'];
-    $patient->pac = $validatedData['pac'];
-    $patient->mede = $validatedData['mede'];
-    $patient->whmede = $validatedData['whmede'];
-    $patient->ven = $validatedData['ven'];
-    $patient->vent = $validatedData['vent'];
-    $patient->inot = $validatedData['inot'];
-    $patient->inoth = $validatedData['inoth'];
-    $patient->surg = $validatedData['surg'];
-    $patient->dos = $validatedData['dos'];
-    $patient->tos = $validatedData['tos'];
-    $patient->ges = $validatedData['ges'];
-    $patient->birthw = $validatedData['birthw'];
+    // Create a new patient record
+    $patient = new Patient;
+    $patient->Patient_ID = $validatedData['pid'];
+    $patient->DOB = $validatedData['dob'];
+    $patient->Sex = $validatedData['sex'];
+    $patient->Province = $validatedData['province'];
+    $patient->Date_Time_Of_Adminssion = $validatedData['doa'];
+    $patient->Date_Time_Of_Death = $validatedData['dod'];
+    $patient->Ward = $validatedData['ward'];
+    $patient->Dead_on_Arrival = $validatedData['deoa'];
+    $patient->Cause_of_Death = $validatedData['cod'];
+    $patient->Chronic_Illness = $validatedData['cil'];
+    $patient->What_Chronic_Illness = $validatedData['whci'];
+    $patient->HCAI = $validatedData['hcai'];
+    $patient->HCAI_From_Where = $validatedData['hcaiw'];
+    $patient->Late_Presentation = $validatedData['lap'];
+    $patient->Palliative_Care = $validatedData['pac'];
+    $patient->Medical_Error = $validatedData['mede'];
+    $patient->What_Medical_Error = $validatedData['whmede'];
+    $patient->Ventilation = $validatedData['ven'];
+    $patient->Ventilated_Days = $validatedData['vent'];
+    $patient->Inotropes = $validatedData['inot'];
+    $patient->Inotropes_Hours = $validatedData['inoth'];
+    $patient->Surgery = $validatedData['surg'];
+    $patient->Date_of_Surgery = $validatedData['dos'];
+    $patient->Type_of_Surgery = $validatedData['tos'];
+    $patient->Gestation = $validatedData['ges'];
+    $patient->Birthweight = $validatedData['birthw'];
     $patient->save();
-    // Return a response
-    return response()->json(['message' => 'Data stored successfully']);
+
+    // Redirect or return a response
+    return response()->json(['success' => true,'message' => 'Patient record created successfully.']);
 }
 
 }

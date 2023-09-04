@@ -17,24 +17,50 @@
 {{-- Add Modal --}}
 @php
     $yns = ['Y','N'];
-    $sex = ['male','female'];
+    $sex = ['Male' => 'M','Female' => 'F'];
+    $provinces = [
+            'Banteay Meanchey',
+            'Battambang',
+            'Kampong Cham',
+            'Kampong Chhnang',
+            'Kampong Speu',
+            'Kampong Thom',
+            'Kandal',
+            'Kep',
+            'Koh Kong',
+            'Kratie',
+            'Mondulkiri',
+            'Oddar Meanchey',
+            'Pailin',
+            'Phnom Penh',
+            'Preah Sihanouk',
+            'Preah Vihear',
+            'Prey Veng',
+            'Pursat',
+            'Ratanakiri',
+            'Siem Reap',
+            'Sihanoukville',
+            'Stung Treng',
+            'Takeo',
+            'Tboung Khmum',
+        ];
 @endphp
 <div class="modal fade" id="modal-xl" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
     <div class="modal-content">
-    <div class="modal-header bg-rainbow">
+    <div class="modal-header">
     <h4 class="modal-title">Add New</h4>
     <button type="button" class="close" data-dismiss="modal" aria-label="Close">
     <span aria-hidden="true">×</span>
     </button>
     </div>
     <div class="modal-body">
-    <form action="/dashboard" method="POST" id="fmdata">
+    <form action="/dashboard" method="POST" id="fmdata" novalidate="novalidate">
     @csrf
     <div class="row">
         <div class="form-group col-md-4">
         <label>Patient ID</label>
-        <input type="text" class="form-control" id="pid" name="pid">
+        <input type="text" class="form-control @error('province') is-invalid @enderror" id="pid" name="pid" required>
         </div>
         <div class="form-group col-md-4">
         <label>DOB</label>
@@ -44,8 +70,8 @@
             <label>Sex</label>
             <select name="sex" id="sex" class="form-control">
                 <option selected="selected"></option>
-                @foreach ($sex as $sexs)
-                <option value="{{ $sexs }}">{{ $sexs }}</option>
+                @foreach ($sex as $key => $value)
+                <option value="{{ $key }}">{{ $value }}</option>
                 @endforeach
             </select>
         </div>
@@ -223,7 +249,6 @@
                 <thead>
                     <tr>
                         <th scope="col">#</th>
-                        <th scope="col">id</th>
                         <th scope="col">Patient_ID</th>
                         <th scope="col">DOB</th>
                         <th scope="col">Sex</th>
@@ -254,39 +279,38 @@
                     </tr>
                 </thead>
                 <tbody>
-                    @for ($i = 1; $i < 50; $i++)
+                    @foreach($patient_info as $i => $patient)
                     <tr>
-                        <td>{{ $i }}</td>
-                        <td>413</td>
-                        <td>2023-006964</td>
-                        <td>2018-08-22 00:00:00</td>
-                        <td>M</td>
-                        <td>Phnom Penh</td>
-                        <td>2023-04-03(17:30)</td>
-                        <td>2023-07-27(05:00)</td>
-                        <td>PICU</td>
-                        <td>N</td>
-                        <td>Severe pneumonia, invasive fungal infection</td>
-                        <td>Y</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>ALL</td>
-                        <td>         
+                        <td>{{ $i + 1 }}</td>
+                        <td>{{ $patient->Patient_ID }}</td>
+                        <td>{{ $patient->DOB }}</td>
+                        <td>{{ $patient->Sex }}</td>
+                        <td>{{ $patient->Province }}</td>
+                        <td>{{ $patient->Date_Time_Of_Adminssion }}</td>
+                        <td>{{ $patient->Date_Time_Of_Death }}</td>
+                        <td>{{ $patient->Ward }}</td>
+                        <td>{{ $patient->Dead_on_Arrival }}</td>
+                        <td>{{ $patient->Cause_of_Death }}</td>
+                        <td>{{ $patient->Chronic_Illness }}</td>
+                        <td>{{ $patient->What_Chronic_Illness }}</td>
+                        <td>{{ $patient->HCAI }}</td>
+                        <td>{{ $patient->HCAI_From_Where }}</td>
+                        <td>{{ $patient->Late_Presentation }}</td>
+                        <td>{{ $patient->Palliative_Care }}</td>
+                        <td>{{ $patient->Medical_Error }}</td>
+                        <td>{{ $patient->What_Medical_Error }}</td>
+                        <td>{{ $patient->Ventilation }}</td>
+                        <td>{{ $patient->Ventilated_Days }}</td>
+                        <td>{{ $patient->Inotropes }}</td>
+                        <td>{{ $patient->Inotropes_Hours }}</td>
+                        <td>{{ $patient->Surgery }}</td>
+                        <td>{{ $patient->Date_of_Surgery }}</td>
+                        <td>{{ $patient->Type_of_Surgery }}</td>
+                        <td>{{ $patient->Gestation }}</td>
+                        <td>{{ $patient->Birthweight }}</td>
+                        <td>        
                         <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
-                        <button class="btn btn-outline-success btn-sm mt-2" title="Edit"><i class="fas fa-edit"></i></button>
+                        <button class="btn btn-outline-success btn-sm mt-2" title="Edit" id="edit"><i class="fas fa-edit"></i></button>
                        <form action="/" method="POST">
                         @method('DELETE')
                         @csrf
@@ -294,7 +318,7 @@
                         </form> 
                         </td>
                     </tr>
-                    @endfor
+                    @endforeach
                     
                 </tbody>
             </table>
@@ -303,13 +327,14 @@
 @stop
 
 @section('css')
-    <link rel="stylesheet" href="#">
+    <link rel="stylesheet" href="/css/style.css">
 @stop
 
 @section('js')
 <script>
-    
-  $(function () {
+$(document).ready(function() {
+
+    // DataTables Javascript
     $('#tblData').DataTable({
       "paging": true,
       "lengthChange": true,
@@ -319,33 +344,276 @@
       "autoWidth": false,
       "responsive": true,
     });
-    
-  });
-$(document).ready(function() {
-    $('#fmdata').submit(function(e) {
-        e.preventDefault();
 
-        $.ajax({
-            url: "{{ route('store.data') }}",
-            type: "POST",
-            data: $(this).serialize(),
-            success: function(response) {
-                // Handle the success response
-                $('#fmdata')[0].reset();
-                $('#modal-xl').modal('hide');
-                alert(response.message);
-            },
-            error: function(xhr) {
-                // Handle the error response
-                var errors = xhr.responseJSON.errors;
-                $.each(errors, function(key, value) {
-                    alert(value[0]);
-                });
-            }
-        });
+    // SweetAlert2
+    var Toast = Swal.mixin({
+      toast: true,
+      position: 'top-end',
+      showConfirmButton: false,
+      timer: 3000
     });
+
+    // Check the validition of the form
+    $('#fmdata').validate({
+    rules: {
+      pid: {
+        required: true,
+      },
+      dob: {
+        required: true,
+        date: true,
+      },
+      sex: {
+        required: true,
+      },
+      province: {
+        required: true,
+      },
+      doa: {
+        required: true,
+        date: true,
+      },
+      dod: {
+        required: true,
+        date: true,
+      },
+      ward: {
+        required: true,
+      },
+      deoa: {
+        required: true,
+      },
+      cod: {
+        required: true,
+      },
+      cil: {
+        required: true,
+      },
+      whci: {
+        required: function(element) {
+          return $('#cil').val() === 'Y';
+        }
+      },
+      hcai: {
+        required: true,
+      },
+      hcaiw: {
+        required: function(element) {
+          return $('#hcai').val() === 'Y';
+        }
+      },
+      lap: {
+        required: true,
+      },
+      pac: {
+        required: true,
+      },
+      mede: {
+        required: true,
+      },
+      whmede: {
+        required: function(element) {
+          return $('#mede').val() === 'Y';
+        }
+      },
+      ven: {
+        required: true,
+      },
+      vent: {
+        required: function(element) {
+          return $('#ven').val() === 'Y';
+        }
+      },
+      inot: {
+        required: true,
+      },
+      inoth: {
+        required: function(element) {
+          return $('#inot').val() === 'Y';
+        }
+      },
+      surg: {
+        required: true,
+      },
+      dos: {
+        required: function(element) {
+          return $('#surg').val() === 'Y';
+        },
+        date: true,
+      },
+      tos: {
+        required: function(element) {
+          return $('#surg').val() === 'Y';
+        },
+      },
+      ges: {
+        integer: true,
+      },
+      birthw: {
+        number: true,
+      },
+    },
+    messages: {
+      pid: {
+        required: "Please enter a Patient ID",
+      },
+      dob: {
+        required: "Please enter a Date of Birth",
+        date: "Please enter a valid date",
+      },
+      sex: {
+        required: "Please select a Sex",
+      },
+      province: {
+        required: "Please select a Province",
+      },
+      doa: {
+        required: "Please enter a Date/Time of Admission",
+        date: "Please enter a valid date/time",
+      },
+      dod: {
+        required: "Please enter a Date/Time of Death",
+        date: "Please enter a valid date/time",
+      },
+      ward: {
+        required: "Please select a Ward",
+      },
+      deoa: {
+        required: "Please select an option for Dead on Arrival",
+      },
+      cod: {
+        required: "Please enter a Cause of Death",
+      },
+      cil: {
+        required: "Please select an option for Chronic Illness",
+      },
+      whci: {
+        required: "Please enter the Chronic Illness",
+      },
+      hcai: {
+        required: "Please select an option for HCAI",
+      },
+      hcaiw: {
+        required: "Please enter the source of HCAI",
+      },
+      lap: {
+        required: "Please select an option for Late Presentation",
+      },
+      pac: {
+        required: "Please select an option for Palliative Care",
+      },
+      mede: {
+        required: "Please select an option for Medical Error",
+      },
+      whmede: {
+        required: "Please enter the Medical Error",
+      },
+      ven: {
+        required: "Please select an option for Ventilation",
+      },
+      vent: {
+        required: "Please enter the number of days ventilated",
+      },
+      inot: {
+        required: "Please select an option for Inotropes",
+      },
+      inoth: {
+        required: "Please enter the number of hours on Inotropes",
+      },
+      surg: {
+        required: "Please select an option for Surgery",
+      },
+      dos: {
+        required: "Please enter the Date of Surgery",
+        date: "Please enter a valid date",
+      },
+      tos: {
+        required: "Please enter the Type of Surgery",
+      },
+      ges: {
+        integer: "Please enter a valid integer value for Gestation",
+      },
+      birthw: {
+        number: "Please enter a valid numeric value for Birthweight",
+      },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
+  });
+  $('#cil').change(function() {
+    if ($('#cil').val() === 'N') {
+      $('#whci').removeClass('is-invalid');
+    }
+  });
+  $('#hcai').change(function() {
+    if ($('#hcai').val() === 'N') {
+      $('#hcaiw').removeClass('is-invalid');
+    }
+  });
+  $('#mede').change(function() {
+    if ($('#mede').val() === 'N') {
+      $('#whmede').removeClass('is-invalid');
+    }
+  });
+  $('#ven').change(function() {
+    if ($('#ven').val() === 'N') {
+      $('#vent').removeClass('is-invalid');
+    }
+  });
+  $('#inot').change(function() {
+    if ($('#inot').val() === 'N') {
+      $('#inoth').removeClass('is-invalid');
+    }
+  });
+  $('#surg').change(function() {
+    if ($('#surg').val() === 'N') {
+      $('#dos').removeClass('is-invalid');
+      $('#tos').removeClass('is-invalid');
+    }
+  });
+
+
+  // Submit the data if the form is valid
+  $('#fmdata').submit(function(e) {
+    e.preventDefault();
+
+    if ($('#fmdata').valid()) {
+      $.ajax({
+        url: "{{ route('store.data') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(response) {
+          // Handle the success response
+          $('#fmdata')[0].reset();
+          $('#modal-xl').modal('hide');
+          if (response.success) {
+            Toast.fire({
+            icon: 'success',
+            title: response.message,
+            });
+          }
+        },
+        error: function(xhr) {
+          // Handle the error response
+          var errors = xhr.responseJSON.errors;
+        }
+      });
+    }
+  });
 });
 
 </script>
 @stop
 @section('plugins.Datatables', true)
+@section('plugins.Sweetalert2', true)
+@section('plugins.Jquery-validation', true)
+
