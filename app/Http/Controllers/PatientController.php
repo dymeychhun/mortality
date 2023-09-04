@@ -4,6 +4,7 @@ namespace App\Http\Controllers;
 
 use App\Models\patient;
 use Illuminate\Http\Request;
+use Maatwebsite\Excel\Facades\Excel;
 
 class PatientController extends Controller
 {

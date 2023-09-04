@@ -1,8 +1,22 @@
-.bg-rainbow{
-    
-    background-image: linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
-    background-image: -moz-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
-    background-image: -o-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
-    background-image: -webkit-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
-    background-image: -ms-linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+/* Add this CSS to your stylesheet */
+.card-rainbow .modal-header {
+    height: 2px;
+    border: none;
+    position: relative;
+    background: linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
+    color: white; /* Change text color to match your design */
+}
+
+.card-rainbow .modal-title {
+    margin: 0;
+}
+
+.card-rainbow .modal-header::before {
+    content: "";
+    position: absolute;
+    top: 0;
+    left: 0;
+    right: 0;
+    height: 5px; /* Adjust this value for the desired border thickness */
+    background: linear-gradient(to right, #71BF44, #F9E21B, #3EB978, #F0526B, #FDBD3D, #1C9B85, #701D46, #E65525, #02534D);
 }

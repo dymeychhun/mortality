@@ -245,83 +245,85 @@
             </div>
         </div>
         <div class="card-body">
-            <table class="table table-bordered table-striped dataTable dtr-inline table-responsive" style="width: 100%" id="tblData">
-                <thead>
-                    <tr>
-                        <th scope="col">#</th>
-                        <th scope="col">Patient_ID</th>
-                        <th scope="col">DOB</th>
-                        <th scope="col">Sex</th>
-                        <th scope="col">Province</th>
-                        <th scope="col">Date_Time_Of_Adminssion</th>
-                        <th scope="col">Date_Time_Of_Death</th>
-                        <th scope="col">Ward</th>
-                        <th scope="col">Dead_on_Arrival</th>
-                        <th scope="col">Cause_of_Death</th>
-                        <th scope="col">Chronic_Illness</th>
-                        <th scope="col">What_Chronic_Illness</th>
-                        <th scope="col">HCAI</th>
-                        <th scope="col">HCAI_From_Where</th>
-                        <th scope="col">Late_Presentation</th>
-                        <th scope="col">Palliative_Care</th>
-                        <th scope="col">Medical_Error</th>
-                        <th scope="col">What_Medical_Error</th>
-                        <th scope="col">Ventilation</th>
-                        <th scope="col">Ventilated_Days</th>
-                        <th scope="col">Inotropes</th>
-                        <th scope="col">Inotropes_Hours</th>
-                        <th scope="col">Surgery</th>
-                        <th scope="col">Date_of_Surgery</th>
-                        <th scope="col">Type_of_Surgery</th>
-                        <th scope="col">Gestation</th>
-                        <th scope="col">Birthweight</th>
-                        <th scope="col">Action</th>
-                    </tr>
-                </thead>
-                <tbody>
-                    @foreach($patient_info as $i => $patient)
-                    <tr>
-                        <td>{{ $i + 1 }}</td>
-                        <td>{{ $patient->Patient_ID }}</td>
-                        <td>{{ $patient->DOB }}</td>
-                        <td>{{ $patient->Sex }}</td>
-                        <td>{{ $patient->Province }}</td>
-                        <td>{{ $patient->Date_Time_Of_Adminssion }}</td>
-                        <td>{{ $patient->Date_Time_Of_Death }}</td>
-                        <td>{{ $patient->Ward }}</td>
-                        <td>{{ $patient->Dead_on_Arrival }}</td>
-                        <td>{{ $patient->Cause_of_Death }}</td>
-                        <td>{{ $patient->Chronic_Illness }}</td>
-                        <td>{{ $patient->What_Chronic_Illness }}</td>
-                        <td>{{ $patient->HCAI }}</td>
-                        <td>{{ $patient->HCAI_From_Where }}</td>
-                        <td>{{ $patient->Late_Presentation }}</td>
-                        <td>{{ $patient->Palliative_Care }}</td>
-                        <td>{{ $patient->Medical_Error }}</td>
-                        <td>{{ $patient->What_Medical_Error }}</td>
-                        <td>{{ $patient->Ventilation }}</td>
-                        <td>{{ $patient->Ventilated_Days }}</td>
-                        <td>{{ $patient->Inotropes }}</td>
-                        <td>{{ $patient->Inotropes_Hours }}</td>
-                        <td>{{ $patient->Surgery }}</td>
-                        <td>{{ $patient->Date_of_Surgery }}</td>
-                        <td>{{ $patient->Type_of_Surgery }}</td>
-                        <td>{{ $patient->Gestation }}</td>
-                        <td>{{ $patient->Birthweight }}</td>
-                        <td>        
-                        <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
-                        <button class="btn btn-outline-success btn-sm mt-2" title="Edit" id="edit"><i class="fas fa-edit"></i></button>
-                       <form action="/" method="POST">
-                        @method('DELETE')
-                        @csrf
-                        <button type="submit" class="btn btn-outline-danger btn-sm mt-2" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                        </form> 
-                        </td>
-                    </tr>
-                    @endforeach
-                    
-                </tbody>
-            </table>
+            <div id="btn_plugin" class="dataTables_wrapper dt-bootstrap4">
+                <table class="table table-bordered table-striped dataTable dtr-inline table-responsive" style="width: 100%" id="tblData">
+                    <thead>
+                        <tr>
+                            <th scope="col">#</th>
+                            <th scope="col">Patient_ID</th>
+                            <th scope="col">DOB</th>
+                            <th scope="col">Sex</th>
+                            <th scope="col">Province</th>
+                            <th scope="col">Date_Time_Of_Adminssion</th>
+                            <th scope="col">Date_Time_Of_Death</th>
+                            <th scope="col">Ward</th>
+                            <th scope="col">Dead_on_Arrival</th>
+                            <th scope="col">Cause_of_Death</th>
+                            <th scope="col">Chronic_Illness</th>
+                            <th scope="col">What_Chronic_Illness</th>
+                            <th scope="col">HCAI</th>
+                            <th scope="col">HCAI_From_Where</th>
+                            <th scope="col">Late_Presentation</th>
+                            <th scope="col">Palliative_Care</th>
+                            <th scope="col">Medical_Error</th>
+                            <th scope="col">What_Medical_Error</th>
+                            <th scope="col">Ventilation</th>
+                            <th scope="col">Ventilated_Days</th>
+                            <th scope="col">Inotropes</th>
+                            <th scope="col">Inotropes_Hours</th>
+                            <th scope="col">Surgery</th>
+                            <th scope="col">Date_of_Surgery</th>
+                            <th scope="col">Type_of_Surgery</th>
+                            <th scope="col">Gestation</th>
+                            <th scope="col">Birthweight</th>
+                            <th scope="col">Action</th>
+                        </tr>
+                    </thead>
+                    <tbody>
+                        @foreach($patient_info as $i => $patient)
+                        <tr>
+                            <td>{{ $i + 1 }}</td>
+                            <td>{{ $patient->Patient_ID }}</td>
+                            <td>{{ $patient->DOB }}</td>
+                            <td>{{ $patient->Sex }}</td>
+                            <td>{{ $patient->Province }}</td>
+                            <td>{{ $patient->Date_Time_Of_Adminssion }}</td>
+                            <td>{{ $patient->Date_Time_Of_Death }}</td>
+                            <td>{{ $patient->Ward }}</td>
+                            <td>{{ $patient->Dead_on_Arrival }}</td>
+                            <td>{{ $patient->Cause_of_Death }}</td>
+                            <td>{{ $patient->Chronic_Illness }}</td>
+                            <td>{{ $patient->What_Chronic_Illness }}</td>
+                            <td>{{ $patient->HCAI }}</td>
+                            <td>{{ $patient->HCAI_From_Where }}</td>
+                            <td>{{ $patient->Late_Presentation }}</td>
+                            <td>{{ $patient->Palliative_Care }}</td>
+                            <td>{{ $patient->Medical_Error }}</td>
+                            <td>{{ $patient->What_Medical_Error }}</td>
+                            <td>{{ $patient->Ventilation }}</td>
+                            <td>{{ $patient->Ventilated_Days }}</td>
+                            <td>{{ $patient->Inotropes }}</td>
+                            <td>{{ $patient->Inotropes_Hours }}</td>
+                            <td>{{ $patient->Surgery }}</td>
+                            <td>{{ $patient->Date_of_Surgery }}</td>
+                            <td>{{ $patient->Type_of_Surgery }}</td>
+                            <td>{{ $patient->Gestation }}</td>
+                            <td>{{ $patient->Birthweight }}</td>
+                            <td>        
+                            <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
+                            <button class="btn btn-outline-success btn-sm mt-2" title="Edit" id="edit"><i class="fas fa-edit"></i></button>
+                           <form action="/" method="POST">
+                            @method('DELETE')
+                            @csrf
+                            <button type="submit" class="btn btn-outline-danger btn-sm mt-2" title="Delete"><i class="fas fa-trash-alt"></i></button>
+                            </form> 
+                            </td>
+                        </tr>
+                        @endforeach
+                        
+                    </tbody>
+                </table>
+            </div>  
         </div>
     </div>
 @stop
@@ -335,15 +337,28 @@
 $(document).ready(function() {
 
     // DataTables Javascript
-    $('#tblData').DataTable({
-      "paging": true,
-      "lengthChange": true,
-      "searching": true,
-      "ordering": true,
-      "info": true,
-      "autoWidth": false,
-      "responsive": true,
+    // $('#tblData').DataTable({
+    //   "paging": true,
+    //   "lengthChange": true,
+    //   "searching": true,
+    //   "ordering": true,
+    //   "info": true,
+    //   "autoWidth": false,
+    //   "responsive": true,
+    // });
+
+    // Initialize DataTable with specified options
+    var table = $("#tblData").DataTable({
+    responsive: true,
+    lengthChange: false,
+    autoWidth: false,
+    buttons: ["copy", "csv", "excel"]
     });
+
+    // Move the buttons container to the specified element
+    table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
+
+
 
     // SweetAlert2
     var Toast = Swal.mixin({
@@ -616,4 +631,6 @@ $(document).ready(function() {
 @section('plugins.Datatables', true)
 @section('plugins.Sweetalert2', true)
 @section('plugins.Jquery-validation', true)
+@section('plugins.datatables-plugins', true)
+
 

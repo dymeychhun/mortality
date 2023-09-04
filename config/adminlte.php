@@ -316,61 +316,68 @@ return [
         ],
         [   'header' => 'DATA ANALYSIS',],
         [
-            'text' => 'Total Deaths',
-            'url'  => '/analysis/total_deaths',
             
-        ],
-        [
-            'text' => 'Dead on Arrival',
-            'url'  => '#',
-        
-        ],
-        [
-            'text' => 'Palliative Care',
-            'url'  => '#',
-            
-        ],
-        [
-            'text' => 'Late Presentation',
-            'url'  => '#',
-            
-        ],
-        [
-            'text' => 'Chronic Illness',
-            'url'  => '#',
-            
-        ],
-        [
-            'text' => 'Medical Error',
-            'url'  => '#',
-           
-        ],
-        [
-            'text' => 'Age & Hours from Admission',
-            'url'  => '#',
-            
-            
-        ],
-        [
-            'text' => 'Percentage of Admission',
-            'url'  => '#',
-            
-        ],
-        [
-            'text' => 'Summary Table',
-            'url'  => '#',
-           
-        ],
-        [
-            'text' => 'NICU',
-            'url'  => '#',
-            
-        ],
-        [
-            'text' => 'PICU',
-            'url'  => '#',
-            
-        ],
+            'text' => 'ANALYSIS',
+            'icon' => 'fas fa-fw fa-chart-bar',
+            'submenu' => [
+                [
+                    'text' => 'Total Deaths',
+                    'url'  => '/analysis/total_deaths',
+                    
+                ],
+                [
+                    'text' => 'Dead on Arrival',
+                    'url'  => '#',
+                
+                ],
+                [
+                    'text' => 'Palliative Care',
+                    'url'  => '#',
+                    
+                ],
+                [
+                    'text' => 'Late Presentation',
+                    'url'  => '#',
+                    
+                ],
+                [
+                    'text' => 'Chronic Illness',
+                    'url'  => '#',
+                    
+                ],
+                [
+                    'text' => 'Medical Error',
+                    'url'  => '#',
+                
+                ],
+                [
+                    'text' => 'Age & Hours from Admission',
+                    'url'  => '#',
+                    
+                    
+                ],
+                [
+                    'text' => 'Percentage of Admission',
+                    'url'  => '#',
+                    
+                ],
+                [
+                    'text' => 'Summary Table',
+                    'url'  => '#',
+                
+                ],
+                [
+                    'text' => 'NICU',
+                    'url'  => '#',
+                    
+                ],
+                [
+                    'text' => 'PICU',
+                    'url'  => '#',
+                    
+                ],
+            ],
+    ],
         // [
         //     'text'    => 'multilevel',
         //     'icon'    => 'fas fa-fw fa-share',
@@ -551,7 +558,63 @@ return [
                     'location' => '/vendor/jquery-validation/additional-methods.min.js',
                 ],
             ]
-        ]
+            ],
+            'datatables-plugins' => [
+                'active' => false,
+                'files' => [
+                    [
+                        'type' => 'css',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
+                        
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/js/dataTables.buttons.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/js/buttons.bootstrap4.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/jszip/jszip.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/pdfmake/pdfmake.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/pdfmake/vfs_fonts.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/js/buttons.html5.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/js/buttons.print.min.js',
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/buttons/js/buttons.colVis.min.js',
+                    ],
+                ]
+            ]
 
     ],
 
