@@ -14,6 +14,7 @@
 @stop
 
 @section('content')
+
 {{-- Add Modal --}}
 @php
     $yns = ['Y','N'];
@@ -45,7 +46,7 @@
             'Tboung Khmum',
         ];
 @endphp
-<div class="modal fade" id="modal-xl" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal-add" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
     <div class="modal-content">
     <div class="modal-header">
@@ -238,10 +239,241 @@
     
     </div>
 {{-- End Add Modal --}}
+
+{{-- Edit Modal --}}
+@php
+    $yns = ['Y','N'];
+    $sex = ['Male' => 'M','Female' => 'F'];
+    $provinces = [
+            'Banteay Meanchey',
+            'Battambang',
+            'Kampong Cham',
+            'Kampong Chhnang',
+            'Kampong Speu',
+            'Kampong Thom',
+            'Kandal',
+            'Kep',
+            'Koh Kong',
+            'Kratie',
+            'Mondulkiri',
+            'Oddar Meanchey',
+            'Pailin',
+            'Phnom Penh',
+            'Preah Sihanouk',
+            'Preah Vihear',
+            'Prey Veng',
+            'Pursat',
+            'Ratanakiri',
+            'Siem Reap',
+            'Sihanoukville',
+            'Stung Treng',
+            'Takeo',
+            'Tboung Khmum',
+        ];
+@endphp
+<div class="modal fade" id="modal_edit" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+    <div class="modal-dialog modal-xl">
+    <div class="modal-content">
+    <div class="modal-header">
+    <h4 class="modal-title">Update</h4>
+    <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+    <span aria-hidden="true">×</span>
+    </button>
+    </div>
+    <div class="modal-body">
+    <form action="/dashboard" method="POST" id="fmupdate" novalidate="novalidate">
+    @method('PUT')
+    @csrf
+    <div class="row">
+    <div class="form-group col-md-12">
+      <input type="text" name="uid" id="uid" class="form-control">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Patient ID</label>
+        <input type="text" class="form-control @error('province') is-invalid @enderror" id="upid" name="upid" required>
+    </div>
+    <div class="form-group col-md-4">
+        <label>DOB</label>
+        <input type="date" class="form-control" id="udob" name="udob">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Sex</label>
+        <select name="usex" id="usex" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($sex as $key => $value)
+            <option value="{{ $key }}">{{ $value }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Province</label>
+        <select name="uprovince" id="uprovince" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($provinces as $province)
+            <option value="{{ $province }}">{{ $province }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Date/Time of admission</label>
+        <input type="datetime-local" class="form-control" id="udoa" name="udoa">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Date/Time of Death</label>
+        <input type="datetime-local" class="form-control" id="udod" name="udod">
+    </div>
+    <div class="form-group col-md-4">
+        @php
+            $ward = ['ER','PICU','NICU','SCBU','ICU'];
+        @endphp
+        <label>Ward</label>
+        <select name="uward" id="uward" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($ward as $wards)
+            <option value="{{ $wards }}">{{ $wards }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Dead on arrival?</label>
+        <select name="udeoa" id="udeoa" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Cause of death</label>
+        <input type="text" class="form-control" id="ucod" name="ucod">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Chronic illness?</label>
+        <select name="ucil" id="ucil" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>What chronic illness?</label>
+        <input type="text" class="form-control" id="uwhci" name="uwhci">
+    </div>
+    <div class="form-group col-md-4">
+        <label>HCAI</label>
+        <select name="uhcai" id="uhcai" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>HCAI from where?</label>
+        <input type="text" class="form-control" id="uhcaiw" name="uhcaiw">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Late presentation?</label>
+        <select name="ulap" id="ulap" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Palliative care?</label>
+        <select name="upac" id="upac" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Medical error?</label>
+        <select name="umede" id="umede" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>What medical error?</label>
+        <input type="text" class="form-control" id="uwhmede" name="uwhmede">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Ventilation?</label>
+        <select name="uven" id="uven" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Ventilated (days)</label>
+        <input type="text" class="form-control" id="uvent" name="uvent">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Inotropes?</label>
+        <select name="uinot" id="uinot" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Inotropes (hours)</label>
+        <input type="text" class="form-control" id="uinoth" name="uinoth">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Surgery?</label>
+        <select name="usurg" id="usurg" class="form-control">
+            <option selected="selected"></option>
+            @foreach ($yns as $yn)
+            <option value="{{ $yn }}">{{ $yn }}</option>
+            @endforeach
+        </select>
+    </div>
+    <div class="form-group col-md-4">
+        <label>Date of surgery</label>
+        <input type="date" class="form-control" id="udos" name="udos">
+    </div>
+    <div class="form-group col-md-4">
+        <label>Type of surgery</label>
+        <input type="text" class="form-control" id="utos" name="utos">
+    </div>
+    <div class="form-group col-md-6">
+        <label>Gestation (weeks): neonates only</label>
+        <input type="text" class="form-control" id="uges" name="uges">
+    </div>
+    <div class="form-group col-md-6">
+        <label>Birthweight (Kg): neonates only</label>
+        <input type="number" class="form-control" id="ubirthw" name="ubirthw">
+    </div>
+</div>
+  
+</form>
+    </div>
+    <div class="modal-footer justify-content-between">
+    <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
+    <button type="submit" class="btn btn-outline-success" form="fmupdate">Update</button>
+    </div>
+    </div>
+    
+    </div>
+    
+    </div>
+{{-- End Edit Modal --}}
+
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-end">
-                <button class="btn btn-success" data-toggle="modal" data-target="#modal-xl"><i class="fas fa-plus-circle"></i> Create New</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#modal-add"><i class="fas fa-plus-circle"></i> Create New</button>
             </div>
         </div>
         <div class="card-body">
@@ -311,7 +543,7 @@
                             <td>{{ $patient->Birthweight }}</td>
                             <td>        
                             <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
-                            <button class="btn btn-outline-success btn-sm mt-2" title="Edit" id="edit"><i class="fas fa-edit"></i></button>
+                            <button class="btn btn-outline-success btn-sm mt-2 btn_edit" title="Edit" value="{{ $patient->id }}"><i class="fas fa-edit"></i></button>
                            <form action="/" method="POST">
                             @method('DELETE')
                             @csrf
@@ -609,7 +841,7 @@ $(document).ready(function() {
         success: function(response) {
           // Handle the success response
           $('#fmdata')[0].reset();
-          $('#modal-xl').modal('hide');
+          $('#modal-add').modal('hide');
           if (response.success) {
             Toast.fire({
             icon: 'success',
@@ -623,6 +855,108 @@ $(document).ready(function() {
         }
       });
     }
+  });
+  $('.btn_edit').click(function (e) {
+    e.preventDefault();
+    var id = $(this).val();
+    $('#modal_edit').modal('show');
+    $.ajax({
+      type: "GET",
+      url: "/dashboard/"+id,
+      success: function (response) {
+        console.log(response);
+        if(response.success) {
+            // Declare variables
+            let data = response.patient;
+
+            // Set the value of #uid to data.id
+            $('#uid').val(data.id);
+
+            // Set the value of #upid to data.Patient_ID
+            $('#upid').val(data.Patient_ID);
+
+            // Set the value of #udob to data.DOB
+            $('#udob').val(data.DOB);
+
+            // Set the value of #usex to data.Sex
+            $('#usex').val(data.Sex);
+
+            // Set the value of #uprovince to data.Province
+            $('#uprovince').val(data.Province);
+
+            // Set the value of #udoa to data.Date_Time_Of_Adminssion
+            $('#udoa').val(data.Date_Time_Of_Adminssion);
+
+            // Set the value of #udod to data.Date_Time_Of_Death
+            $('#udod').val(data.Date_Time_Of_Death);
+
+            // Set the value of #uward to data.Ward
+            $('#uward').val(data.Ward);
+
+            // Set the value of #udeoa to data.Dead_on_Arrival
+            $('#udeoa').val(data.Dead_on_Arrival);
+
+            // Set the value of #ucod to data.Cause_of_Death
+            $('#ucod').val(data.Cause_of_Death);
+
+            // Set the value of #ucil to data.Chronic_Illness
+            $('#ucil').val(data.Chronic_Illness);
+
+            // Set the value of #uwhci to data.What_Chronic_Illness
+            $('#uwhci').val(data.What_Chronic_Illness);
+
+            // Set the value of #uhcai to data.HCAI
+            $('#uhcai').val(data.HCAI);
+
+            // Set the value of #uhcaiw to data.HCAI_From_Where
+            $('#uhcaiw').val(data.HCAI_From_Where);
+
+            // Set the value of #ulap to data.Late_Presentation
+            $('#ulap').val(data.Late_Presentation);
+
+            // Set the value of #upac to data.Palliative_Care
+            $('#upac').val(data.Palliative_Care);
+
+            // Set the value of #umede to data.Medical_Error
+            $('#umede').val(data.Medical_Error);
+
+            // Set the value of #uwhmede to data.What_Medical_Error
+            $('#uwhmede').val(data.What_Medical_Error);
+
+            // Set the value of #uven to data.Ventilation
+            $('#uven').val(data.Ventilation);
+
+            // Set the value of #uvent to data.Ventilated_Days
+            $('#uvent').val(data.Ventilated_Days);
+
+            // Set the value of #uinot to data.Inotropes
+            $('#uinot').val(data.Inotropes);
+
+            // Set the value of #uinoth to data.Inotropes_Hours
+            $('#uinoth').val(data.Inotropes_Hours);
+
+            // Set the value of #usurg to data.Surgery
+            $('#usurg').val(data.Surgery);
+
+            // Set the value of #udos to data.Date_of_Surgery
+            $('#udos').val(data.Date_of_Surgery);
+
+            // Set the value of #utos to data.Type_of_Surgery
+            $('#utos').val(data.Type_of_Surgery);
+
+            // Set the value of #uges to data.Gestation
+            $('#uges').val(data.Gestation);
+
+            // Set the value of #ubirthw to data.Birthweight
+            $('#ubirthw').val(data.Birthweight);
+        }
+      }
+    });
+  });
+
+  $('.btn_del').click(function (e) { 
+    e.preventDefault();
+    
   });
 });
 

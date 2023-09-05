@@ -8,22 +8,30 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class ExcelController extends Controller
 {
+    public function index()
+    {
+        return view('import');
+    }
+
     public function upload(Request $request)
     {
+        try {
         // Validate the uploaded file
         $request->validate([
-            'file' => 'required|mimes:xlsx'
+            'file' => 'required|mimes:xlsx,xls,csv'
         ]);
 
         // Get the uploaded file
         $file = $request->file('file');
+        $path = $file->store('public/uploads');
 
-        // Read the Excel file and retrieve the data
-        $data = Excel::toArray([], $file)[0];
+            // Read the Excel file and retrieve the data
+            $data = Excel::toCollection([], $path)->first();
 
         // Loop through each row and save the data to the database
+            $patients = [];
         foreach ($data as $row) {
-            patient::create([
+                $patients[] = [
                 'Patient_ID' => $row[0],
                 'DOB' => $row[1],
                 'Sex' => $row[2],
@@ -50,10 +58,18 @@ class ExcelController extends Controller
                 'Type_of_Surgery' => $row[23],
                 'Gestation' => $row[24],
                 'Birthweight' => $row[25],
-            ]);
+                ];
         }
+
+            // Insert the data into the database in batches
+            patient::insert($patients);
 
         // Redirect back with a success message
         return back()->with('success', 'Data uploaded successfully.');
+        } catch (\Exception $e) {
+            // Handle any exceptions or errors
+            return back()->with('error', 'An error occurred while uploading the data.');
+        }
     }
 }
+    

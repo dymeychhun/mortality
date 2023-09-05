@@ -29,3 +29,8 @@ Route::get('/analysis/total_deaths', function(){
     return view('analysis.total_deaths');
 });
 Route::post('/dashboard', 'App\Http\Controllers\PatientController@store')->name('store.data');
+
+Route::get('/dashboard/{id}', 'App\Http\Controllers\PatientController@edit')->name('edit.data');
+Route::PUT('/dashboard', 'App\Http\Controllers\PatientController@update')->name('update.data');
+// Route::get('/import', 'App\Http\Controllers\ExcelController@index')->name('import');
+// Route::post('/import', 'App\Http\Controllers\ExcelController@upload')->name('upload');
