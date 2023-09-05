@@ -85,34 +85,35 @@ public function edit($id){
 }
 
 public function update(Request $request){
+
     $patient_id = $request->input('uid');
     $patient = Patient::findOrFail($patient_id);
-    $patient->pid = $request->input('upid');
-    $patient->dob = $request->input('udob');
-    $patient->sex = $request->input('usex');
-    $patient->province = $request->input('uprovince');
-    $patient->doa = $request->input('udoa');
-    $patient->dod = $request->input('udod');
-    $patient->ward = $request->input('uward');
-    $patient->deoa = $request->input('udeoa');
-    $patient->cod = $request->input('ucod');
-    $patient->cil = $request->input('ucil');
-    $patient->whci = $request->input('uwhci');
-    $patient->hcai = $request->input('uhcai');
-    $patient->hcaiw = $request->input('uhcaiw');
-    $patient->lap = $request->input('ulap');
-    $patient->pac = $request->input('upac');
-    $patient->mede = $request->input('umede');
-    $patient->whmede = $request->input('uwhmede');
-    $patient->ven = $request->input('uven');
-    $patient->vent = $request->input('uvent');
-    $patient->inot = $request->input('uinot');
-    $patient->inoth = $request->input('uinoth');
-    $patient->surg = $request->input('usurg');
-    $patient->dos = $request->input('udos');
-    $patient->tos = $request->input('utos');
-    $patient->ges = $request->input('uges');
-    $patient->birthw = $request->input('ubirthw');
+    $patient->Patient_ID = $request->input('upid');
+    $patient->DOB = $request->input('udob');
+    $patient->Sex = $request->input('usex');
+    $patient->Province = $request->input('uprovince');
+    $patient->Date_Time_Of_Adminssion = $request->input('udoa');
+    $patient->Date_Time_Of_Death = $request->input('udod');
+    $patient->Ward = $request->input('uward');
+    $patient->Dead_on_Arrival = $request->input('udeoa');
+    $patient->Cause_of_Death = $request->input('ucod');
+    $patient->Chronic_Illness = $request->input('ucil');
+    $patient->What_Chronic_Illness = $request->input('uwhci');
+    $patient->HCAI = $request->input('uhcai');
+    $patient->HCAI_From_Where = $request->input('uhcaiw');
+    $patient->Late_Presentation = $request->input('ulap');
+    $patient->Palliative_Care = $request->input('upac');
+    $patient->Medical_Error = $request->input('umede');
+    $patient->What_Medical_Error = $request->input('uwhmede');
+    $patient->Ventilation = $request->input('uven');
+    $patient->Ventilated_Days = $request->input('uvent');
+    $patient->Inotropes = $request->input('uinot');
+    $patient->Inotropes_Hours = $request->input('uinoth');
+    $patient->Surgery = $request->input('usurg');
+    $patient->Date_of_Surgery = $request->input('udos');
+    $patient->Type_of_Surgery = $request->input('utos');
+    $patient->Gestation = $request->input('uges');
+    $patient->Birthweight = $request->input('ubirthw');
 
     $patient->update();
 
