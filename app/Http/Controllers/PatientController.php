@@ -9,70 +9,50 @@ use Maatwebsite\Excel\Facades\Excel;
 class PatientController extends Controller
 {
 
-public function index(){
-    $patient_info = patient::all();
-    return view('dashboard', compact('patient_info'));
-}
+public function index(Request $request)
+    {
+        $patients = Patient::all();
+    
+        if ($request->expectsJson()) {
+            
+            return response()->json($patients);
+        }
+    
+        return view('dashboard');
+    }
+
 
 public function store(Request $request)
 {
-    $validatedData = $request->validate([
-        'pid' => 'required',
-        'dob' => 'required|date',
-        'sex' => 'required',
-        'province' => 'required',
-        'doa' => 'required|date',
-        'dod' => 'required|date',
-        'ward' => 'required',
-        'deoa' => 'required',
-        'cod' => 'required',
-        'cil' => 'required',
-        'whci' => 'nullable|required_if:cil,Y',
-        'hcai' => 'required',
-        'hcaiw' => 'nullable|required_if:hcai,Y',
-        'lap' => 'required',
-        'pac' => 'required',
-        'mede' => 'required',
-        'whmede' => 'nullable|required_if:mede,Y',
-        'ven' => 'required',
-        'vent' => 'nullable|required_if:ven,Y',
-        'inot' => 'required',
-        'inoth' => 'nullable|required_if:inot,Y',
-        'surg' => 'required',
-        'dos' => 'nullable|date|required_if:surg,Y',
-        'tos' => 'nullable|required_if:surg,Y',
-        'ges' => 'nullable|integer',
-        'birthw' => 'nullable|numeric',
-    ]);
 
     // Create a new patient record
     $patient = new Patient;
-    $patient->Patient_ID = $validatedData['pid'];
-    $patient->DOB = $validatedData['dob'];
-    $patient->Sex = $validatedData['sex'];
-    $patient->Province = $validatedData['province'];
-    $patient->Date_Time_Of_Adminssion = $validatedData['doa'];
-    $patient->Date_Time_Of_Death = $validatedData['dod'];
-    $patient->Ward = $validatedData['ward'];
-    $patient->Dead_on_Arrival = $validatedData['deoa'];
-    $patient->Cause_of_Death = $validatedData['cod'];
-    $patient->Chronic_Illness = $validatedData['cil'];
-    $patient->What_Chronic_Illness = $validatedData['whci'];
-    $patient->HCAI = $validatedData['hcai'];
-    $patient->HCAI_From_Where = $validatedData['hcaiw'];
-    $patient->Late_Presentation = $validatedData['lap'];
-    $patient->Palliative_Care = $validatedData['pac'];
-    $patient->Medical_Error = $validatedData['mede'];
-    $patient->What_Medical_Error = $validatedData['whmede'];
-    $patient->Ventilation = $validatedData['ven'];
-    $patient->Ventilated_Days = $validatedData['vent'];
-    $patient->Inotropes = $validatedData['inot'];
-    $patient->Inotropes_Hours = $validatedData['inoth'];
-    $patient->Surgery = $validatedData['surg'];
-    $patient->Date_of_Surgery = $validatedData['dos'];
-    $patient->Type_of_Surgery = $validatedData['tos'];
-    $patient->Gestation = $validatedData['ges'];
-    $patient->Birthweight = $validatedData['birthw'];
+    $patient->Patient_ID = $request->input('pid');
+    $patient->DOB = $request->input('dob');
+    $patient->Sex = $request->input('sex');
+    $patient->Province = $request->input('province');
+    $patient->Date_Time_Of_Adminssion = $request->input('doa');
+    $patient->Date_Time_Of_Death = $request->input('dod');
+    $patient->Ward = $request->input('ward');
+    $patient->Dead_on_Arrival = $request->input('deoa');
+    $patient->Cause_of_Death = $request->input('cod');
+    $patient->Chronic_Illness = $request->input('cil');
+    $patient->What_Chronic_Illness = $request->input('whci');
+    $patient->HCAI = $request->input('hcai');
+    $patient->HCAI_From_Where = $request->input('hcaiw');
+    $patient->Late_Presentation = $request->input('lap');
+    $patient->Palliative_Care = $request->input('pac');
+    $patient->Medical_Error = $request->input('mede');
+    $patient->What_Medical_Error = $request->input('whmede');
+    $patient->Ventilation = $request->input('ven');
+    $patient->Ventilated_Days = $request->input('vent');
+    $patient->Inotropes = $request->input('inot');
+    $patient->Inotropes_Hours = $request->input('inoth');
+    $patient->Surgery = $request->input('surg');
+    $patient->Date_of_Surgery = $request->input('dos');
+    $patient->Type_of_Surgery = $request->input('tos');
+    $patient->Gestation = $request->input('ges');
+    $patient->Birthweight = $request->input('birthw');
 
     $patient->save();
 
@@ -80,6 +60,7 @@ public function store(Request $request)
     return response()->json(['success' => true,'message' => 'Patient record created successfully.']);
 }
 public function edit($id){
+
     $patientId = patient::findOrFail($id);
     return response()->json(['success' => true, 'patient' => $patientId]);
 }
@@ -119,6 +100,14 @@ public function update(Request $request){
 
     // Redirect or return a response
     return response()->json(['success' => true,'message' => 'Patient record updated successfully.']);
+}
+
+public function destroy($id) {
+
+    $patient = patient::findOrFail($id);
+    $patient->delete();
+
+    return response()->json(['success' => true,'message' => 'Patient record deleted successfully.']);
 }
 
 }

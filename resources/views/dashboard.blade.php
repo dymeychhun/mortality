@@ -46,7 +46,7 @@
             'Tboung Khmum',
         ];
 @endphp
-<div class="modal fade" id="modal-add" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+<div class="modal fade" id="modal_add" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
     <div class="modal-dialog modal-xl">
     <div class="modal-content">
     <div class="modal-header">
@@ -56,7 +56,7 @@
     </button>
     </div>
     <div class="modal-body">
-    <form action="/dashboard" method="POST" id="fmdata" novalidate="novalidate">
+    <form action="{{ route('dashboard') }}" method="POST" id="fmdata" novalidate="novalidate">
     @csrf
     <div class="row">
         <div class="form-group col-md-4">
@@ -281,7 +281,7 @@
     </button>
     </div>
     <div class="modal-body">
-    <form action="/dashboard" method="POST" id="fmupdate" novalidate="novalidate">
+    <form action="{{ route('dashboard') }}" method="POST" id="fmupdate" novalidate="novalidate">
     @method('PUT')
     @csrf
     <div class="row">
@@ -290,7 +290,7 @@
     </div>
     <div class="form-group col-md-4">
         <label>Patient ID</label>
-        <input type="text" class="form-control @error('province') is-invalid @enderror" id="upid" name="upid" required>
+        <input type="text" class="form-control" id="upid" name="upid">
     </div>
     <div class="form-group col-md-4">
         <label>DOB</label>
@@ -456,10 +456,9 @@
         <input type="number" class="form-control" id="ubirthw" name="ubirthw">
     </div>
 </div>
-  
 </form>
     </div>
-    <div class="modal-footer justify-content-between">
+    <div class="modal-footer">
     <button type="button" class="btn btn-outline-danger" data-dismiss="modal">Close</button>
     <button type="submit" class="btn btn-outline-success" form="fmupdate">Update</button>
     </div>
@@ -470,10 +469,43 @@
     </div>
 {{-- End Edit Modal --}}
 
+{{-- Del Modal --}}
+<!-- Modal for deleting patient data -->
+<div class="modal fade" id="modal_del" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1" aria-hidden="true">
+  <div class="modal-dialog modal-sm">
+    <div class="modal-content">
+      <!-- Modal header -->
+      <div class="modal-header">
+        <h4 class="modal-title">Delete</h4>
+        <button type="button" class="close" data-dismiss="modal" aria-label="Close">
+          <span aria-hidden="true">×</span>
+        </button>
+      </div>
+      <!-- Modal body -->
+      <div class="modal-body">
+        <form action="" method="POST" name="fmdel" id="fmdel">
+          @method('DELETE')
+          @csrf
+          <input type="hidden" name="patient_id" id="patient_id">
+        </form>
+        <div class="text-center">
+          <h4>Are you sure?</h4>
+          <b>You won't be able to revert this!</b>
+        </div>
+      </div>
+      <!-- Modal footer -->
+      <div class="modal-footer justify-content-between">
+        <button type="button" class="btn btn-danger" data-dismiss="modal">Cancel</button>
+        <button type="submit" class="btn btn-success" form="fmdel">OK</button>
+      </div>
+    </div>
+  </div>
+</div>
+{{-- End Del Modal --}}
     <div class="card">
         <div class="card-header">
             <div class="d-flex justify-content-end">
-                <button class="btn btn-success" data-toggle="modal" data-target="#modal-add"><i class="fas fa-plus-circle"></i> Create New</button>
+                <button class="btn btn-success" data-toggle="modal" data-target="#modal_add"><i class="fas fa-plus-circle"></i> Create New</button>
             </div>
         </div>
         <div class="card-body">
@@ -511,48 +543,8 @@
                             <th scope="col">Action</th>
                         </tr>
                     </thead>
-                    <tbody>
-                        @foreach($patient_info as $i => $patient)
-                        <tr>
-                            <td>{{ $i + 1 }}</td>
-                            <td>{{ $patient->Patient_ID }}</td>
-                            <td>{{ $patient->DOB }}</td>
-                            <td>{{ $patient->Sex }}</td>
-                            <td>{{ $patient->Province }}</td>
-                            <td>{{ $patient->Date_Time_Of_Adminssion }}</td>
-                            <td>{{ $patient->Date_Time_Of_Death }}</td>
-                            <td>{{ $patient->Ward }}</td>
-                            <td>{{ $patient->Dead_on_Arrival }}</td>
-                            <td>{{ $patient->Cause_of_Death }}</td>
-                            <td>{{ $patient->Chronic_Illness }}</td>
-                            <td>{{ $patient->What_Chronic_Illness }}</td>
-                            <td>{{ $patient->HCAI }}</td>
-                            <td>{{ $patient->HCAI_From_Where }}</td>
-                            <td>{{ $patient->Late_Presentation }}</td>
-                            <td>{{ $patient->Palliative_Care }}</td>
-                            <td>{{ $patient->Medical_Error }}</td>
-                            <td>{{ $patient->What_Medical_Error }}</td>
-                            <td>{{ $patient->Ventilation }}</td>
-                            <td>{{ $patient->Ventilated_Days }}</td>
-                            <td>{{ $patient->Inotropes }}</td>
-                            <td>{{ $patient->Inotropes_Hours }}</td>
-                            <td>{{ $patient->Surgery }}</td>
-                            <td>{{ $patient->Date_of_Surgery }}</td>
-                            <td>{{ $patient->Type_of_Surgery }}</td>
-                            <td>{{ $patient->Gestation }}</td>
-                            <td>{{ $patient->Birthweight }}</td>
-                            <td>        
-                            <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
-                            <button class="btn btn-outline-success btn-sm mt-2 btn_edit" title="Edit" value="{{ $patient->id }}"><i class="fas fa-edit"></i></button>
-                           <form action="/" method="POST">
-                            @method('DELETE')
-                            @csrf
-                            <button type="submit" class="btn btn-outline-danger btn-sm mt-2" title="Delete"><i class="fas fa-trash-alt"></i></button>
-                            </form> 
-                            </td>
-                        </tr>
-                        @endforeach
-                        
+                    <tbody id="patientTableBody">
+
                     </tbody>
                 </table>
             </div>  
@@ -566,7 +558,27 @@
 
 @section('js')
 <script>
+
 $(document).ready(function() {
+
+   // Toastr Plugin
+   toastr.options = {
+      "closeButton": true,
+      "debug": false,
+      "newestOnTop": false,
+      "progressBar": true,
+      "positionClass": "toast-top-right",
+      "preventDuplicates": false,
+      "onclick": null,
+      "showDuration": "300",
+      "hideDuration": "1000",
+      "timeOut": "5000",
+      "extendedTimeOut": "1000",
+      "showEasing": "swing",
+      "hideEasing": "linear",
+      "showMethod": "fadeIn",
+      "hideMethod": "fadeOut"
+      }
 
     // DataTables Javascript
     // $('#tblData').DataTable({
@@ -579,27 +591,72 @@ $(document).ready(function() {
     //   "responsive": true,
     // });
 
-    // Initialize DataTable with specified options
-    var table = $("#tblData").DataTable({
-    responsive: true,
-    lengthChange: false,
-    autoWidth: false,
-    buttons: ["copy", "csv", "excel"]
-    });
+//function getData
+function fetchPatients() {
+        $.ajax({
+            url: "/dashboard",
+            type: "GET",
+            dataType: "json",
+            success: function (data) {
+                // Clear existing table rows
+                $("#patientTableBody").empty();
 
-    // Move the buttons container to the specified element
-    table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
+                // Populate the table with fetched data
+                $.each(data, function (index, patient) {
+                    var row = "<tr>" +
+                        "<td>" + (index + 1) + "</td>" +
+                        "<td>" + patient.Patient_ID + "</td>" +
+                        "<td>" + patient.DOB + "</td>" +
+                        "<td>" + patient.Sex + "</td>" +
+                        "<td>" + patient.Province + "</td>" +
+                        "<td>" + patient.Date_Time_Of_Adminssion + "</td>" +
+                        "<td>" + patient.Date_Time_Of_Death + "</td>" +
+                        "<td>" + patient.Ward + "</td>" +
+                        "<td>" + patient.Dead_on_Arrival + "</td>" +
+                        "<td>" + patient.Cause_of_Death + "</td>" +
+                        "<td>" + patient.Chronic_Illness + "</td>" +
+                        "<td>" + patient.What_Chronic_Illness + "</td>" +
+                        "<td>" + patient.HCAI + "</td>" +
+                        "<td>" + patient.HCAI_From_Where + "</td>" +
+                        "<td>" + patient.Late_Presentation + "</td>" +
+                        "<td>" + patient.Palliative_Care + "</td>" +
+                        "<td>" + patient.Medical_Error + "</td>" +
+                        "<td>" + patient.What_Medical_Error + "</td>" +
+                        "<td>" + patient.Ventilation + "</td>" +
+                        "<td>" + patient.Ventilated_Days + "</td>" +
+                        "<td>" + patient.Inotropes + "</td>" +
+                        "<td>" + patient.Inotropes_Hours + "</td>" +
+                        "<td>" + patient.Surgery + "</td>" +
+                        "<td>" + patient.Date_of_Surgery + "</td>" +
+                        "<td>" + patient.Type_of_Surgery + "</td>" +
+                        "<td>" + patient.Gestation + "</td>" +
+                        "<td>" + patient.Birthweight + "</td>" +
+                        "<td>" +
+                        "<a href='#' class='btn btn-outline-primary btn-sm mt-2' title='View'><i class='fas fa-eye'></i></a>" +
+                        "<button class='btn btn-outline-success btn-sm mt-2 btn_edit' title='Edit' value='" + patient.id + "'><i class='fas fa-edit'></i></button>" +
+                        "<button type='submit' class='btn btn-outline-danger btn-sm mt-2 btn_del' title='Delete' value='" + patient.id + "'><i class='fas fa-trash-alt'></i></button>" +
+                        "</td>" +
+                        "</tr>";
+                    $("#patientTableBody").append(row);
+                });
+                    // Initialize DataTable with specified options
+                var table = $("#tblData").DataTable({
+                responsive: true,
+                lengthChange: false,
+                autoWidth: false,
+                buttons: ["copy", "csv", "excel"]
+                });
 
-
-
-    // SweetAlert2
-    var Toast = Swal.mixin({
-      toast: true,
-      position: 'top-end',
-      showConfirmButton: false,
-      timer: 3000
-    });
-
+                // Move the buttons container to the specified element
+                table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
+            },
+            error: function () {
+                console.error("Error fetching data.");
+            },
+        });
+    }
+    fetchPatients()
+ 
     // Check the validition of the form
     $('#fmdata').validate({
     rules: {
@@ -841,28 +898,28 @@ $(document).ready(function() {
         success: function(response) {
           // Handle the success response
           $('#fmdata')[0].reset();
-          $('#modal-add').modal('hide');
+          $('#modal_add').modal('hide');
           if (response.success) {
-            Toast.fire({
-            icon: 'success',
-            title: response.message,
-            });
+            fetchPatients();
+            toastr.success(response.message);
           }
         },
         error: function(xhr) {
           // Handle the error response
           var errors = xhr.responseJSON.errors;
+          toastr.error(errors);
         }
       });
     }
   });
+
   $('.btn_edit').click(function (e) {
     e.preventDefault();
     var id = $(this).val();
     $('#modal_edit').modal('show');
     $.ajax({
       type: "GET",
-      url: "/dashboard/"+id,
+      url: "/dashboard/" + id,
       success: function (response) {
         console.log(response);
         if(response.success) {
@@ -954,16 +1011,299 @@ $(document).ready(function() {
     });
   });
 
-  $('.btn_del').click(function (e) { 
-    e.preventDefault();
-    
+  // Check the update validition of the form
+  $('#fmupdate').validate({
+    rules: {
+      upid: {
+        required: true,
+      },
+      udob: {
+        required: true,
+        date: true,
+      },
+      usex: {
+        required: true,
+      },
+      uprovince: {
+        required: true,
+      },
+      udoa: {
+        required: true,
+        date: true,
+      },
+      udod: {
+        required: true,
+        date: true,
+      },
+      uward: {
+        required: true,
+      },
+      udeoa: {
+        required: true,
+      },
+      ucod: {
+        required: true,
+      },
+      ucil: {
+        required: true,
+      },
+      uwhci: {
+        required: function(element) {
+          return $('#ucil').val() === 'Y';
+        }
+      },
+      uhcai: {
+        required: true,
+      },
+      uhcaiw: {
+        required: function(element) {
+          return $('#uhcai').val() === 'Y';
+        }
+      },
+      ulap: {
+        required: true,
+      },
+      upac: {
+        required: true,
+      },
+      umede: {
+        required: true,
+      },
+      uwhmede: {
+        required: function(element) {
+          return $('#umede').val() === 'Y';
+        }
+      },
+      uven: {
+        required: true,
+      },
+      uvent: {
+        required: function(element) {
+          return $('#uven').val() === 'Y';
+        }
+      },
+      uinot: {
+        required: true,
+      },
+      uinoth: {
+        required: function(element) {
+          return $('#uinot').val() === 'Y';
+        }
+      },
+      usurg: {
+        required: true,
+      },
+      udos: {
+        required: function(element) {
+          return $('#usurg').val() === 'Y';
+        },
+        date: true,
+      },
+      utos: {
+        required: function(element) {
+          return $('#usurg').val() === 'Y';
+        },
+      },
+      uges: {
+        integer: true,
+      },
+      ubirthw: {
+        number: true,
+      },
+    },
+    messages: {
+      upid: {
+        required: "Please enter a Patient ID",
+      },
+      udob: {
+        required: "Please enter a Date of Birth",
+        date: "Please enter a valid date",
+      },
+      usex: {
+        required: "Please select a Sex",
+      },
+      uprovince: {
+        required: "Please select a Province",
+      },
+      udoa: {
+        required: "Please enter a Date/Time of Admission",
+        date: "Please enter a valid date/time",
+      },
+      udod: {
+        required: "Please enter a Date/Time of Death",
+        date: "Please enter a valid date/time",
+      },
+      uward: {
+        required: "Please select a Ward",
+      },
+      udeoa: {
+        required: "Please select an option for Dead on Arrival",
+      },
+      ucod: {
+        required: "Please enter a Cause of Death",
+      },
+      ucil: {
+        required: "Please select an option for Chronic Illness",
+      },
+      uwhci: {
+        required: "Please enter the Chronic Illness",
+      },
+      uhcai: {
+        required: "Please select an option for HCAI",
+      },
+      uhcaiw: {
+        required: "Please enter the source of HCAI",
+      },
+      ulap: {
+        required: "Please select an option for Late Presentation",
+      },
+      upac: {
+        required: "Please select an option for Palliative Care",
+      },
+      umede: {
+        required: "Please select an option for Medical Error",
+      },
+      uwhmede: {
+        required: "Please enter the Medical Error",
+      },
+      uven: {
+        required: "Please select an option for Ventilation",
+      },
+      uvent: {
+        required: "Please enter the number of days ventilated",
+      },
+      uinot: {
+        required: "Please select an option for Inotropes",
+      },
+      uinoth: {
+        required: "Please enter the number of hours on Inotropes",
+      },
+      usurg: {
+        required: "Please select an option for Surgery",
+      },
+      udos: {
+        required: "Please enter the Date of Surgery",
+        date: "Please enter a valid date",
+      },
+      utos: {
+        required: "Please enter the Type of Surgery",
+      },
+      uges: {
+        integer: "Please enter a valid integer value for Gestation",
+      },
+      ubirthw: {
+        number: "Please enter a valid numeric value for Birthweight",
+      },
+    },
+    errorElement: 'span',
+    errorPlacement: function (error, element) {
+      error.addClass('invalid-feedback');
+      element.closest('.form-group').append(error);
+    },
+    highlight: function (element, errorClass, validClass) {
+      $(element).addClass('is-invalid');
+    },
+    unhighlight: function (element, errorClass, validClass) {
+      $(element).removeClass('is-invalid');
+    }
   });
+  $('#ucil').change(function() {
+    if ($('#ucil').val() === 'N') {
+      $('#uwhci').removeClass('is-invalid');
+    }
+  });
+  $('#uhcai').change(function() {
+    if ($('#uhcai').val() === 'N') {
+      $('#uhcaiw').removeClass('is-invalid');
+    }
+  });
+  $('#umede').change(function() {
+    if ($('#umede').val() === 'N') {
+      $('#uwhmede').removeClass('is-invalid');
+    }
+  });
+  $('#uven').change(function() {
+    if ($('#uven').val() === 'N') {
+      $('#uvent').removeClass('is-invalid');
+    }
+  });
+  $('#uinot').change(function() {
+    if ($('#uinot').val() === 'N') {
+      $('#uinoth').removeClass('is-invalid');
+    }
+  });
+  $('#usurg').change(function() {
+    if ($('#usurg').val() === 'N') {
+      $('#udos').removeClass('is-invalid');
+      $('#utos').removeClass('is-invalid');
+    }
+  });
+
+
+  // Submit the update data if the form is valid
+  $('#fmupdate').submit(function(e) {
+    e.preventDefault();
+
+    if ($('#fmupdate').valid()) {
+      $.ajax({
+        url: "{{ route('update.data') }}",
+        type: "POST",
+        data: $(this).serialize(),
+        success: function(response) {
+          // Handle the success response
+          $('#modal_edit').modal('hide');
+          if (response.success) {
+            fetchPatients();
+            toastr.success(response.message);
+          }
+        },
+        error: function(xhr) {
+          // Handle the error response
+          var errors = xhr.responseJSON.errors;
+          toastr.error(errors);
+        }
+      });
+    }
+  });
+
+  
+  $('.btn_del').click(function (e) {
+    console.log('buttons clicked'); 
+    e.preventDefault();
+    let id = $(this).val();
+    // Set the form action URL with the patient ID
+    $('#fmdel').attr('action', '/dashboard/' + id);
+    $('#modal_del').modal('show');
+    $('#patient_id').val(id);
+  });
+
+  //Submit the delete data
+  $('#fmdel').submit(function(e) {
+    e.preventDefault();
+
+    $.ajax({
+        url: $(this).attr('action'), // Get the action URL from the form
+        type: "POST",
+        data: $(this).serialize(), // Serialize the form data
+        success: function(response) {
+            // Handle the success response
+            $('#modal_del').modal('hide');
+            if (response.success) {
+                toastr.success(response.message);
+            }
+        },
+        error: function(xhr) {
+            toastr.error('Error deleting. Please try again!');
+        }
+    }); 
+  });
+
 });
 
 </script>
 @stop
 @section('plugins.Datatables', true)
-@section('plugins.Sweetalert2', true)
+@section('plugins.Toastr', true)
 @section('plugins.Jquery-validation', true)
 @section('plugins.datatables-plugins', true)
 

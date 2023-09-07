@@ -529,6 +529,21 @@ return [
                 ],
             ],
         ],
+        'Toastr' => [
+            'active' => false,
+            'files' => [
+                [
+                    'type' => 'js',
+                    'asset' => true,
+                    'location' => '/vendor/toastr/toastr.min.js',
+                ],
+                [
+                    'type' => 'css',
+                    'asset' => true,
+                    'location' => '/vendor/toastr/toastr.min.css',
+                ],
+            ],
+        ],
         'Pace' => [
             'active' => false,
             'files' => [
