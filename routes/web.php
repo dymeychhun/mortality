@@ -1,5 +1,6 @@
 <?php
 
+
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\HomeController;
@@ -17,15 +18,17 @@ use App\Http\Controllers\PatientController;
 |
 */
 
+
 Route::get('/', function () {
     return view('auth.login');
 });
 
 Auth::routes();
+Route::get('/welcome', function(){
+    return view('welcome');
+});
 
 Route::get('/dashboard',  'App\Http\Controllers\PatientController@index')->name('dashboard');
-
-Route::get('/get-patients', 'App\Http\Controllers\PatientController@getPatients')->name('get-patients');
 
 // Route::get('/analysis/total_deaths', function(){
 

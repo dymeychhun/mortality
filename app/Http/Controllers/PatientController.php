@@ -8,17 +8,14 @@ use Maatwebsite\Excel\Facades\Excel;
 
 class PatientController extends Controller
 {
-
-public function index(Request $request)
+public function __construct()
+{
+    $this->middleware('auth');
+}
+public function index()
     {
         $patients = Patient::all();
-    
-        if ($request->expectsJson()) {
-            
-            return response()->json($patients);
-        }
-    
-        return view('dashboard');
+        return view('dashboard', compact('patients'));
     }
 
 

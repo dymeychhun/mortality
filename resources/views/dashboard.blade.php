@@ -286,7 +286,7 @@
     @csrf
     <div class="row">
     <div class="form-group col-md-12">
-      <input type="text" name="uid" id="uid" class="form-control">
+      <input type="hidden" name="uid" id="uid" class="form-control">
     </div>
     <div class="form-group col-md-4">
         <label>Patient ID</label>
@@ -544,7 +544,42 @@
                         </tr>
                     </thead>
                     <tbody id="patientTableBody">
-
+                      @foreach($patients as $i => $patient)
+                      <tr>
+                          <td>{{ $i + 1 }}</td>
+                          <td>{{ $patient->Patient_ID }}</td>
+                          <td>{{ $patient->DOB }}</td>
+                          <td>{{ $patient->Sex }}</td>
+                          <td>{{ $patient->Province }}</td>
+                          <td>{{ $patient->Date_Time_Of_Adminssion }}</td>
+                          <td>{{ $patient->Date_Time_Of_Death }}</td>
+                          <td>{{ $patient->Ward }}</td>
+                          <td>{{ $patient->Dead_on_Arrival }}</td>
+                          <td>{{ $patient->Cause_of_Death }}</td>
+                          <td>{{ $patient->Chronic_Illness }}</td>
+                          <td>{{ $patient->What_Chronic_Illness }}</td>
+                          <td>{{ $patient->HCAI }}</td>
+                          <td>{{ $patient->HCAI_From_Where }}</td>
+                          <td>{{ $patient->Late_Presentation }}</td>
+                          <td>{{ $patient->Palliative_Care }}</td>
+                          <td>{{ $patient->Medical_Error }}</td>
+                          <td>{{ $patient->What_Medical_Error }}</td>
+                          <td>{{ $patient->Ventilation }}</td>
+                          <td>{{ $patient->Ventilated_Days }}</td>
+                          <td>{{ $patient->Inotropes }}</td>
+                          <td>{{ $patient->Inotropes_Hours }}</td>
+                          <td>{{ $patient->Surgery }}</td>
+                          <td>{{ $patient->Date_of_Surgery }}</td>
+                          <td>{{ $patient->Type_of_Surgery }}</td>
+                          <td>{{ $patient->Gestation }}</td>
+                          <td>{{ $patient->Birthweight }}</td>
+                          <td>        
+                          <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
+                          <button class="btn btn-outline-success btn-sm mt-2 btn_edit" title="Edit" value="{{ $patient->id }}"><i class="fas fa-edit"></i></button>
+                          <button type="submit" class="btn btn-outline-danger btn-sm mt-2 btn_del" title="Delete" value="{{ $patient->id }}"><i class="fas fa-trash-alt"></i></button>
+                          </td>
+                      </tr>
+                      @endforeach
                     </tbody>
                 </table>
             </div>  
@@ -591,71 +626,16 @@ $(document).ready(function() {
     //   "responsive": true,
     // });
 
-//function getData
-function fetchPatients() {
-        $.ajax({
-            url: "/dashboard",
-            type: "GET",
-            dataType: "json",
-            success: function (data) {
-                // Clear existing table rows
-                $("#patientTableBody").empty();
+    var table = $("#tblData").DataTable({
+    responsive: true,
+    lengthChange: false,
+    autoWidth: false,
+    buttons: ["copy", "csv", "excel"]
+    });
 
-                // Populate the table with fetched data
-                $.each(data, function (index, patient) {
-                    var row = "<tr>" +
-                        "<td>" + (index + 1) + "</td>" +
-                        "<td>" + patient.Patient_ID + "</td>" +
-                        "<td>" + patient.DOB + "</td>" +
-                        "<td>" + patient.Sex + "</td>" +
-                        "<td>" + patient.Province + "</td>" +
-                        "<td>" + patient.Date_Time_Of_Adminssion + "</td>" +
-                        "<td>" + patient.Date_Time_Of_Death + "</td>" +
-                        "<td>" + patient.Ward + "</td>" +
-                        "<td>" + patient.Dead_on_Arrival + "</td>" +
-                        "<td>" + patient.Cause_of_Death + "</td>" +
-                        "<td>" + patient.Chronic_Illness + "</td>" +
-                        "<td>" + patient.What_Chronic_Illness + "</td>" +
-                        "<td>" + patient.HCAI + "</td>" +
-                        "<td>" + patient.HCAI_From_Where + "</td>" +
-                        "<td>" + patient.Late_Presentation + "</td>" +
-                        "<td>" + patient.Palliative_Care + "</td>" +
-                        "<td>" + patient.Medical_Error + "</td>" +
-                        "<td>" + patient.What_Medical_Error + "</td>" +
-                        "<td>" + patient.Ventilation + "</td>" +
-                        "<td>" + patient.Ventilated_Days + "</td>" +
-                        "<td>" + patient.Inotropes + "</td>" +
-                        "<td>" + patient.Inotropes_Hours + "</td>" +
-                        "<td>" + patient.Surgery + "</td>" +
-                        "<td>" + patient.Date_of_Surgery + "</td>" +
-                        "<td>" + patient.Type_of_Surgery + "</td>" +
-                        "<td>" + patient.Gestation + "</td>" +
-                        "<td>" + patient.Birthweight + "</td>" +
-                        "<td>" +
-                        "<a href='#' class='btn btn-outline-primary btn-sm mt-2' title='View'><i class='fas fa-eye'></i></a>" +
-                        "<button class='btn btn-outline-success btn-sm mt-2 btn_edit' title='Edit' value='" + patient.id + "'><i class='fas fa-edit'></i></button>" +
-                        "<button type='submit' class='btn btn-outline-danger btn-sm mt-2 btn_del' title='Delete' value='" + patient.id + "'><i class='fas fa-trash-alt'></i></button>" +
-                        "</td>" +
-                        "</tr>";
-                    $("#patientTableBody").append(row);
-                });
-                    // Initialize DataTable with specified options
-                var table = $("#tblData").DataTable({
-                responsive: true,
-                lengthChange: false,
-                autoWidth: false,
-                buttons: ["copy", "csv", "excel"]
-                });
+    // Move the buttons container to the specified element
+    table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
 
-                // Move the buttons container to the specified element
-                table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
-            },
-            error: function () {
-                console.error("Error fetching data.");
-            },
-        });
-    }
-    fetchPatients()
  
     // Check the validition of the form
     $('#fmdata').validate({
@@ -900,7 +880,6 @@ function fetchPatients() {
           $('#fmdata')[0].reset();
           $('#modal_add').modal('hide');
           if (response.success) {
-            fetchPatients();
             toastr.success(response.message);
           }
         },
@@ -1253,7 +1232,6 @@ function fetchPatients() {
           // Handle the success response
           $('#modal_edit').modal('hide');
           if (response.success) {
-            fetchPatients();
             toastr.success(response.message);
           }
         },
