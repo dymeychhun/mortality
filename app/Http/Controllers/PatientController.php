@@ -4,21 +4,24 @@ namespace App\Http\Controllers;
 
 use App\Models\patient;
 use Illuminate\Http\Request;
-use Maatwebsite\Excel\Facades\Excel;
 
 class PatientController extends Controller
 {
+
+// function authorization
 public function __construct()
 {
     $this->middleware('auth');
 }
+
+//function dashboard
 public function index()
     {
         $patients = Patient::all();
         return view('dashboard', compact('patients'));
     }
 
-
+//function store
 public function store(Request $request)
 {
 
@@ -56,12 +59,15 @@ public function store(Request $request)
     // Redirect or return a response
     return response()->json(['success' => true,'message' => 'Patient record created successfully.']);
 }
+
+// function edit
 public function edit($id){
 
     $patientId = patient::findOrFail($id);
     return response()->json(['success' => true, 'patient' => $patientId]);
 }
 
+//function update
 public function update(Request $request){
 
     $patient_id = $request->input('uid');
@@ -99,12 +105,24 @@ public function update(Request $request){
     return response()->json(['success' => true,'message' => 'Patient record updated successfully.']);
 }
 
+// function destroy
 public function destroy($id) {
 
     $patient = patient::findOrFail($id);
     $patient->delete();
 
     return response()->json(['success' => true,'message' => 'Patient record deleted successfully.']);
+}
+
+// function fetch data
+public function fetch(){
+
+    $patient_info = patient::all();
+
+    if($patient_info){
+        return response()->json(['success' => true, 'patients' => $patient_info]);
+    }
+    
 }
 
 }

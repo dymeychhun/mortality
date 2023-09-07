@@ -544,7 +544,7 @@
                         </tr>
                     </thead>
                     <tbody id="patientTableBody">
-                      @foreach($patients as $i => $patient)
+                      {{-- @foreach($patients as $i => $patient)
                       <tr>
                           <td>{{ $i + 1 }}</td>
                           <td>{{ $patient->Patient_ID }}</td>
@@ -579,7 +579,7 @@
                           <button type="submit" class="btn btn-outline-danger btn-sm mt-2 btn_del" title="Delete" value="{{ $patient->id }}"><i class="fas fa-trash-alt"></i></button>
                           </td>
                       </tr>
-                      @endforeach
+                      @endforeach --}}
                     </tbody>
                 </table>
             </div>  
@@ -595,6 +595,7 @@
 <script>
 
 $(document).ready(function() {
+
 
    // Toastr Plugin
    toastr.options = {
@@ -626,17 +627,84 @@ $(document).ready(function() {
     //   "responsive": true,
     // });
 
-    var table = $("#tblData").DataTable({
-    responsive: true,
-    lengthChange: false,
-    autoWidth: false,
-    buttons: ["copy", "csv", "excel"]
+    // Call the function to populate the table initially
+    fetchPatients();
+
+    //function fetch data
+    function fetchPatients() {
+
+    $.ajax({
+        url: "{{ route('fetch.data') }}",
+        type: "GET",
+        dataType: "json",
+        success: function (data) {
+            //Clear existing table rows
+            $("#patientTableBody").empty();
+
+            //Populate the table with fetched data
+            $.each(data.patients, function (index, patient) {
+                var row = "<tr>" +
+                    "<td>" + (index + 1) + "</td>" +
+                    "<td>" + patient.Patient_ID + "</td>" +
+                    "<td>" + patient.DOB + "</td>" +
+                    "<td>" + patient.Sex + "</td>" +
+                    "<td>" + patient.Province + "</td>" +
+                    "<td>" + patient.Date_Time_Of_Adminssion + "</td>" +
+                    "<td>" + patient.Date_Time_Of_Death + "</td>" +
+                    "<td>" + patient.Ward + "</td>" +
+                    "<td>" + patient.Dead_on_Arrival + "</td>" +
+                    "<td>" + patient.Cause_of_Death + "</td>" +
+                    "<td>" + patient.Chronic_Illness + "</td>" +
+                    "<td>" + patient.What_Chronic_Illness + "</td>" +
+                    "<td>" + patient.HCAI + "</td>" +
+                    "<td>" + patient.HCAI_From_Where + "</td>" +
+                    "<td>" + patient.Late_Presentation + "</td>" +
+                    "<td>" + patient.Palliative_Care + "</td>" +
+                    "<td>" + patient.Medical_Error + "</td>" +
+                    "<td>" + patient.What_Medical_Error + "</td>" +
+                    "<td>" + patient.Ventilation + "</td>" +
+                    "<td>" + patient.Ventilated_Days + "</td>" +
+                    "<td>" + patient.Inotropes + "</td>" +
+                    "<td>" + patient.Inotropes_Hours + "</td>" +
+                    "<td>" + patient.Surgery + "</td>" +
+                    "<td>" + patient.Date_of_Surgery + "</td>" +
+                    "<td>" + patient.Type_of_Surgery + "</td>" +
+                    "<td>" + patient.Gestation + "</td>" +
+                    "<td>" + patient.Birthweight + "</td>" +
+                    "<td>" +
+                    "<a href='#' class='btn btn-outline-primary btn-sm mt-2' title='View'><i class='fas fa-eye'></i></a>" +
+                    "<button class='btn btn-outline-success btn-sm mt-2 btn_edit' title='Edit' value='" + patient.id + "'><i class='fas fa-edit'></i></button>" +
+                    "<button type='submit' class='btn btn-outline-danger btn-sm mt-2 btn_del' title='Delete' value='" + patient.id + "'><i class='fas fa-trash-alt'></i></button>" +
+                    "</td>" +
+                    "</tr>";
+                $("#patientTableBody").append(row);
+            });
+
+            // Check if the DataTable is already initialized
+            if ($.fn.DataTable.isDataTable('#tblData')) {
+                    // If initialized, destroy the existing DataTable
+                    $('#tblData').DataTable().destroy();
+                }
+
+            // Initialize DataTable after populating data
+            var table = $("#tblData").DataTable({
+                responsive: true,
+                lengthChange: false,
+                autoWidth: false,
+                buttons: ["copy", "csv", "excel"]
+            });
+
+            // Move the buttons container to the specified element
+            table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
+        },
+        error: function () {
+            console.error("Error fetching data.");
+        },
     });
+}
 
-    // Move the buttons container to the specified element
-    table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
 
- 
+
     // Check the validition of the form
     $('#fmdata').validate({
     rules: {
@@ -882,17 +950,17 @@ $(document).ready(function() {
           if (response.success) {
             toastr.success(response.message);
           }
+          fetchPatients();
         },
         error: function(xhr) {
           // Handle the error response
-          var errors = xhr.responseJSON.errors;
-          toastr.error(errors);
+          toastr.error('Error while inserting. Please try again!');
         }
       });
     }
   });
 
-  $('.btn_edit').click(function (e) {
+  $(document).on('click','.btn_edit', function (e) {
     e.preventDefault();
     var id = $(this).val();
     $('#modal_edit').modal('show');
@@ -1220,7 +1288,7 @@ $(document).ready(function() {
 
 
   // Submit the update data if the form is valid
-  $('#fmupdate').submit(function(e) {
+  $(document).on('submit' ,'#fmupdate', function(e) {
     e.preventDefault();
 
     if ($('#fmupdate').valid()) {
@@ -1231,32 +1299,35 @@ $(document).ready(function() {
         success: function(response) {
           // Handle the success response
           $('#modal_edit').modal('hide');
-          if (response.success) {
+          if (response.success) { 
             toastr.success(response.message);
           }
+          fetchPatients();
         },
         error: function(xhr) {
           // Handle the error response
-          var errors = xhr.responseJSON.errors;
-          toastr.error(errors);
+          toastr.error('Error while updating. Please try again!');
         }
       });
     }
   });
 
   
-  $('.btn_del').click(function (e) {
-    console.log('buttons clicked'); 
+  $(document).on('click', '.btn_del', function (e) {
+
     e.preventDefault();
+
     let id = $(this).val();
     // Set the form action URL with the patient ID
     $('#fmdel').attr('action', '/dashboard/' + id);
     $('#modal_del').modal('show');
     $('#patient_id').val(id);
+
   });
 
   //Submit the delete data
   $('#fmdel').submit(function(e) {
+    
     e.preventDefault();
 
     $.ajax({
@@ -1267,11 +1338,12 @@ $(document).ready(function() {
             // Handle the success response
             $('#modal_del').modal('hide');
             if (response.success) {
-                toastr.success(response.message);
+              toastr.success(response.message);
             }
+            fetchPatients();
         },
         error: function(xhr) {
-            toastr.error('Error deleting. Please try again!');
+            toastr.error('Error while deleting. Please try again!');
         }
     }); 
   });

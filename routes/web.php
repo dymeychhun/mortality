@@ -3,8 +3,6 @@
 
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
-use App\Http\Controllers\HomeController;
-use App\Http\Controllers\ExcelController;
 use App\Http\Controllers\PatientController;
 
 /*
@@ -24,11 +22,12 @@ Route::get('/', function () {
 });
 
 Auth::routes();
+
 Route::get('/welcome', function(){
     return view('welcome');
 });
 
-Route::get('/dashboard',  'App\Http\Controllers\PatientController@index')->name('dashboard');
+Route::get('/dashboard',  [PatientController::class, 'index'])->name('dashboard');
 
 // Route::get('/analysis/total_deaths', function(){
 
@@ -36,13 +35,12 @@ Route::get('/dashboard',  'App\Http\Controllers\PatientController@index')->name(
 
 // });
 
-Route::post('/dashboard', 'App\Http\Controllers\PatientController@store')->name('store.data');
+Route::post('/dashboard', [PatientController::class, 'store'])->name('store.data');
 
-Route::get('/dashboard/{id}', 'App\Http\Controllers\PatientController@edit')->name('edit.data');
+Route::get('/dashboard/{id}', [PatientController::class, 'edit'])->name('edit.data');
 
-Route::PUT('/dashboard', 'App\Http\Controllers\PatientController@update')->name('update.data');
+Route::PUT('/dashboard', [PatientController::class, 'update'])->name('update.data');
 
-Route::delete('/dashboard/{id}', 'App\Http\Controllers\PatientController@destroy')->name('destroy.data');
+Route::delete('/dashboard/{id}', [PatientController::class, 'destroy'])->name('destroy.data');
 
-// Route::get('/import', 'App\Http\Controllers\ExcelController@index')->name('import');
-// Route::post('/import', 'App\Http\Controllers\ExcelController@upload')->name('upload');
+Route::get('/get-patients', [PatientController::class, 'fetch'])->name('fetch.data');;
