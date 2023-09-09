@@ -4,6 +4,7 @@
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\PatientController;
+use App\Http\Controllers\ExcelImportController;
 
 /*
 |--------------------------------------------------------------------------
@@ -23,7 +24,7 @@ Route::get('/', function () {
 
 Auth::routes();
 
-Route::get('/welcome', function(){
+Route::get('/welcome', function () {
     return view('welcome');
 });
 
@@ -43,4 +44,6 @@ Route::PUT('/dashboard', [PatientController::class, 'update'])->name('update.dat
 
 Route::delete('/dashboard/{id}', [PatientController::class, 'destroy'])->name('destroy.data');
 
-Route::get('/get-patients', [PatientController::class, 'fetch'])->name('fetch.data');;
+Route::get('/get-patients', [PatientController::class, 'fetch'])->name('fetch.data');
+
+Route::post('/dashboard/import', [ExcelImportController::class, 'import'])->name('import.excel');
