@@ -10,8 +10,8 @@ class patient extends Model
     use HasFactory;
 
     protected $fillable = [
+        // Add other columns to allow mass assignment for here
         'Patient_ID',
-        // Add other columns you want to allow mass assignment for here
         'DOB',
         'Sex',
         'Province',

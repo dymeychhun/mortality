@@ -24,11 +24,11 @@ class ExcelImportController extends Controller
             foreach (array_slice($rows, 1) as $row) {
                 $data = [
                     'Patient_ID' => $row[0],
-                    'DOB' => date('Y-m-d', strtotime($row[1])), // Convert "DOB" to Y-m-d format
+                    'DOB' => date('Y-m-d', strtotime($row[1])),
                     'Sex' => $row[2],
                     'Province' => $row[3],
-                    'Date_Time_Of_Adminssion' => date('Y-m-d H:i:s', strtotime($row[4])), // Example format: "2023-09-06 11:00:00"
-                    'Date_Time_Of_Death' => date('Y-m-d H:i:s', strtotime($row[5])), // Example format: "2023-09-06 14:00:00"
+                    'Date_Time_Of_Adminssion' => date('Y-m-d H:i:s', strtotime($row[4])),
+                    'Date_Time_Of_Death' => date('Y-m-d H:i:s', strtotime($row[5])),
                     'Ward' => $row[6],
                     'Dead_on_Arrival' => $row[7],
                     'Cause_of_Death' => $row[8],
@@ -45,9 +45,9 @@ class ExcelImportController extends Controller
                     'Inotropes' => $row[19],
                     'Inotropes_Hours' => $row[20],
                     'Surgery' => $row[21],
-                    'Date_of_Surgery' => date('Y-m-d H:i:s', strtotime($row[22])), // Example format: "2023-09-06 10:30:00"
+                    'Date_of_Surgery' => date('Y-m-d H:i:s', strtotime($row[22])),
                     'Type_of_Surgery' => $row[23],
-                    'Gestation' => $row[24],
+                    'Gestation' => intval($row[24]), // Convert to integer
                     'Birthweight' => $row[25],
                 ];
 

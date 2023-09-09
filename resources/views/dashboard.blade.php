@@ -12,14 +12,20 @@
     </div>
     <h1>Dashboard</h1>
     @if (session('success'))
-        <div class="alert alert-success">
+        <div class="alert alert-success alert-dismissible fade show mt-2" id="successAlert" role="alert">
             {{ session('success') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     @endif
 
     @if (session('error'))
-        <div class="alert alert-danger">
+        <div class="alert alert-error alert-dismissible fade show mt-2" role="alert">
             {{ session('error') }}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
         </div>
     @endif
 @stop
@@ -29,11 +35,11 @@
     {{-- Add Modal --}}
     @php
         $yns = ['Y', 'N'];
-        $sex = ['Male' => 'M', 'Female' => 'F'];
+        $sex = ['M' => 'M', 'F' => 'F'];
         $provinces = ['Banteay Meanchey', 'Battambang', 'Kampong Cham', 'Kampong Chhnang', 'Kampong Speu', 'Kampong Thom', 'Kandal', 'Kep', 'Koh Kong', 'Kratie', 'Mondulkiri', 'Oddar Meanchey', 'Pailin', 'Phnom Penh', 'Preah Sihanouk', 'Preah Vihear', 'Prey Veng', 'Pursat', 'Ratanakiri', 'Siem Reap', 'Sihanoukville', 'Stung Treng', 'Takeo', 'Tboung Khmum'];
     @endphp
-    <div class="modal fade" id="modal_add" style="display: none;" data-backdrop="static" data-keyboard="false" tabindex="-1"
-        aria-hidden="true">
+    <div class="modal fade" id="modal_add" style="display: none;" data-backdrop="static" data-keyboard="false"
+        tabindex="-1" aria-hidden="true">
         <div class="modal-dialog modal-xl">
             <div class="modal-content">
                 <div class="modal-header">
@@ -231,7 +237,7 @@
     {{-- Edit Modal --}}
     @php
         $yns = ['Y', 'N'];
-        $sex = ['Male' => 'M', 'Female' => 'F'];
+        $sex = ['M' => 'M', 'F' => 'F'];
         $provinces = ['Banteay Meanchey', 'Battambang', 'Kampong Cham', 'Kampong Chhnang', 'Kampong Speu', 'Kampong Thom', 'Kandal', 'Kep', 'Koh Kong', 'Kratie', 'Mondulkiri', 'Oddar Meanchey', 'Pailin', 'Phnom Penh', 'Preah Sihanouk', 'Preah Vihear', 'Prey Veng', 'Pursat', 'Ratanakiri', 'Siem Reap', 'Sihanoukville', 'Stung Treng', 'Takeo', 'Tboung Khmum'];
     @endphp
     <div class="modal fade" id="modal_edit" style="display: none;" data-backdrop="static" data-keyboard="false"
@@ -479,13 +485,21 @@
                     </button>
                 </div>
                 <div class="modal-body">
-                    <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data">
+                    <form action="{{ route('import.excel') }}" method="POST" enctype="multipart/form-data"
+                        id="importForm">
                         @csrf
-                        <div class="form-group">
-                            <label for="file">Choose Excel File:</label>
-                            <input type="file" name="file" class="form-control">
+                        <div class="input-group mb-3">
+                            <div class="custom-file">
+                                <input type="file" name="file" class="custom-file-input" id="file"
+                                    accept=".xls, .xlsx, .csv">
+                                <label class="custom-file-label" for="file">Choose Excel File</label>
+                            </div>
+                            <div class="input-group-append">
+                                <button type="submit" class="btn btn-primary"><i class="fas fa-upload"></i>
+                                    Import</button>
+                            </div>
                         </div>
-                        <button type="submit" class="btn btn-primary">Import</button>
+                        <div class="invalid-feedback">Please select a valid Excel file.</div>
                     </form>
                 </div>
             </div>
@@ -505,8 +519,8 @@
         </div>
         <div class="card-body">
             <div id="btn_plugin" class="dataTables_wrapper dt-bootstrap4">
-                <table class="table table-bordered table-striped dataTable dtr-inline table-responsive"
-                    style="width: 100%" id="tblData">
+                <table class="table table-bordered table-striped dataTable dtr-inline collapsed table-responsive"
+                    id="tblData">
                     <thead>
                         <tr>
                             <th scope="col">#</th>
@@ -540,42 +554,7 @@
                         </tr>
                     </thead>
                     <tbody id="patientTableBody">
-                        {{-- @foreach ($patients as $i => $patient)
-                      <tr>
-                          <td>{{ $i + 1 }}</td>
-                          <td>{{ $patient->Patient_ID }}</td>
-                          <td>{{ $patient->DOB }}</td>
-                          <td>{{ $patient->Sex }}</td>
-                          <td>{{ $patient->Province }}</td>
-                          <td>{{ $patient->Date_Time_Of_Adminssion }}</td>
-                          <td>{{ $patient->Date_Time_Of_Death }}</td>
-                          <td>{{ $patient->Ward }}</td>
-                          <td>{{ $patient->Dead_on_Arrival }}</td>
-                          <td>{{ $patient->Cause_of_Death }}</td>
-                          <td>{{ $patient->Chronic_Illness }}</td>
-                          <td>{{ $patient->What_Chronic_Illness }}</td>
-                          <td>{{ $patient->HCAI }}</td>
-                          <td>{{ $patient->HCAI_From_Where }}</td>
-                          <td>{{ $patient->Late_Presentation }}</td>
-                          <td>{{ $patient->Palliative_Care }}</td>
-                          <td>{{ $patient->Medical_Error }}</td>
-                          <td>{{ $patient->What_Medical_Error }}</td>
-                          <td>{{ $patient->Ventilation }}</td>
-                          <td>{{ $patient->Ventilated_Days }}</td>
-                          <td>{{ $patient->Inotropes }}</td>
-                          <td>{{ $patient->Inotropes_Hours }}</td>
-                          <td>{{ $patient->Surgery }}</td>
-                          <td>{{ $patient->Date_of_Surgery }}</td>
-                          <td>{{ $patient->Type_of_Surgery }}</td>
-                          <td>{{ $patient->Gestation }}</td>
-                          <td>{{ $patient->Birthweight }}</td>
-                          <td>        
-                          <a href="#" class="btn btn-outline-primary btn-sm mt-2" title="View"><i class="fas fa-eye"></i></a>
-                          <button class="btn btn-outline-success btn-sm mt-2 btn_edit" title="Edit" value="{{ $patient->id }}"><i class="fas fa-edit"></i></button>
-                          <button type="submit" class="btn btn-outline-danger btn-sm mt-2 btn_del" title="Delete" value="{{ $patient->id }}"><i class="fas fa-trash-alt"></i></button>
-                          </td>
-                      </tr>
-                      @endforeach --}}
+
                     </tbody>
                 </table>
             </div>
@@ -611,16 +590,6 @@
                 "hideMethod": "fadeOut"
             }
 
-            // DataTables Javascript
-            // $('#tblData').DataTable({
-            //   "paging": true,
-            //   "lengthChange": true,
-            //   "searching": true,
-            //   "ordering": true,
-            //   "info": true,
-            //   "autoWidth": false,
-            //   "responsive": true,
-            // });
 
             // Initialize DataTable
             var table = $("#tblData").DataTable({
@@ -1337,6 +1306,28 @@
                 });
             });
 
+            // Automatically close the success alert after 5 seconds
+            setTimeout(function() {
+                $("#successAlert").alert('close');
+            }, 5000); // 5000 milliseconds = 5 seconds
+
+            $('#file').on('change', function() {
+                var fileName = $(this).val().split('\\').pop(); // Extract the file name
+                $(this).next('.custom-file-label').html(fileName); // Update the label
+            });
+
+            // Use jQuery to prevent form submission if the file input is empty
+            $('#importForm').submit(function() {
+                var allowedExtensions = ["xls", "xlsx", "csv"];
+                var fileExtension = $('#file').val().split('.').pop().toLowerCase();
+                if ($('#file').get(0).files.length === 0 || $.inArray(fileExtension, allowedExtensions) ===
+                    -1) {
+                    $('#file').addClass('is-invalid'); // Add Bootstrap invalid class
+                    $('.invalid-feedback').show(); // Show the error message
+                    return false; // Prevent form submission
+                }
+                return true; // Allow form submission
+            });
         });
     </script>
 @stop

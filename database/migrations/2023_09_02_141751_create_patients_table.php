@@ -23,7 +23,7 @@ class CreatePatientsTable extends Migration
             $table->dateTime('Date_Time_Of_Death');
             $table->string('Ward');
             $table->string('Dead_on_Arrival');
-            $table->string('Cause_of_Death');
+            $table->longText('Cause_of_Death');
             $table->string('Chronic_Illness');
             $table->string('What_Chronic_Illness')->nullable();
             $table->string('HCAI');

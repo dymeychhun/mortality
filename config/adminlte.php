@@ -580,8 +580,19 @@ return [
                     [
                         'type' => 'css',
                         'asset' => true,
+                        'location' => '/vendor/datatables-plugins/responsive/css/responsive.bootstrap4.min.css',
+                        
+                    ],
+                    [
+                        'type' => 'css',
+                        'asset' => true,
                         'location' => '/vendor/datatables-plugins/buttons/css/buttons.bootstrap4.min.css',
                         
+                    ],
+                    [
+                        'type' => 'js',
+                        'asset' => true,
+                        'location' => '/vendor/datatables-plugins/responsive/js/responsive.bootstrap4.min.js',
                     ],
                     [
                         'type' => 'js',
