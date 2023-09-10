@@ -110,9 +110,9 @@
                             </div>
                             <div class="form-group col-md-4">
                                 <label>Cause of death</label>
-                                <input type="text" class="form-control" id="cod" name="cod">
+                                <textarea class="form-control" id="cod" name="cod" cols="10"></textarea>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Chronic illness?</label>
                                 <select name="cil" id="cil" class="form-control">
                                     <option selected="selected"></option>
@@ -121,11 +121,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>What chronic illness?</label>
-                                <input type="text" class="form-control" id="whci" name="whci">
+                                <textarea class="form-control" id="whci" name="whci" cols="10"></textarea>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>HCAI</label>
                                 <select name="hcai" id="hcai" class="form-control">
                                     <option selected="selected"></option>
@@ -134,11 +134,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>HCAI from where?</label>
-                                <input type="text" class="form-control" id="hcaiw" name="hcaiw">
+                                <textarea class="form-control" id="hcaiw" name="hcaiw" cols="10"></textarea>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Late presentation?</label>
                                 <select name="lap" id="lap" class="form-control">
                                     <option selected="selected"></option>
@@ -147,7 +147,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Palliative care?</label>
                                 <select name="pac" id="pac" class="form-control">
                                     <option selected="selected"></option>
@@ -156,7 +156,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Medical error?</label>
                                 <select name="mede" id="mede" class="form-control">
                                     <option selected="selected"></option>
@@ -165,11 +165,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>What medical error?</label>
-                                <input type="text" class="form-control" id="whmede" name="whmede">
+                                <textarea class="form-control" id="whmede" name="whmede" cols="10"></textarea>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Ventilation?</label>
                                 <select name="ven" id="ven" class="form-control">
                                     <option selected="selected"></option>
@@ -178,11 +178,11 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Ventilated (days)</label>
                                 <input type="text" class="form-control" id="vent" name="vent">
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Inotropes?</label>
                                 <select name="inot" id="inot" class="form-control">
                                     <option selected="selected"></option>
@@ -191,7 +191,7 @@
                                     @endforeach
                                 </select>
                             </div>
-                            <div class="form-group col-md-4">
+                            <div class="form-group col-md-6">
                                 <label>Inotropes (hours)</label>
                                 <input type="text" class="form-control" id="inoth" name="inoth">
                             </div>
@@ -491,7 +491,7 @@
                         <div class="input-group mb-3">
                             <div class="custom-file">
                                 <input type="file" name="file" class="custom-file-input" id="file"
-                                    accept=".xls, .xlsx, .csv">
+                                    accept=".xls, .xlsx">
                                 <label class="custom-file-label" for="file">Choose Excel File</label>
                             </div>
                             <div class="input-group-append">
@@ -642,7 +642,7 @@
                                 patient.Type_of_Surgery,
                                 patient.Gestation,
                                 patient.Birthweight,
-                                "<a href='#' class='btn btn-outline-primary btn-sm mt-2' title='View'><i class='fas fa-eye'></i></a>" +
+                                // "<a href='#' class='btn btn-outline-primary btn-sm mt-2' title='View'><i class='fas fa-eye'></i></a>" +
                                 "<button class='btn btn-outline-success btn-sm mt-2 btn_edit' title='Edit' value='" +
                                 patient.id + "'><i class='fas fa-edit'></i></button>" +
                                 "<button type='submit' class='btn btn-outline-danger btn-sm mt-2 btn_del' title='Delete' value='" +
@@ -1318,7 +1318,7 @@
 
             // Use jQuery to prevent form submission if the file input is empty
             $('#importForm').submit(function() {
-                var allowedExtensions = ["xls", "xlsx", "csv"];
+                var allowedExtensions = ["xls", "xlsx"];
                 var fileExtension = $('#file').val().split('.').pop().toLowerCase();
                 if ($('#file').get(0).files.length === 0 || $.inArray(fileExtension, allowedExtensions) ===
                     -1) {
