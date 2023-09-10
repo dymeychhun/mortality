@@ -602,17 +602,16 @@
             // Move the buttons container to the specified element
             table.buttons().container().appendTo('#btn_plugin .col-md-6:eq(0)');
 
-            // Function to fetch and populate data
-            function fetchPatients() {
+            // Fetche data from database
+            function fetchPatients(table) {
                 $.ajax({
                     url: "{{ route('fetch.data') }}",
                     type: "GET",
                     dataType: "json",
                     success: function(data) {
-                        // Clear existing table rows
-                        table.clear().draw();
+                        table.clear().draw(); // Clear the old tbody
 
-                        // Populate the table with fetched data
+                        var rows = [];
                         $.each(data.patients, function(index, patient) {
                             var rowData = [
                                 (index + 1),
@@ -642,16 +641,15 @@
                                 patient.Type_of_Surgery,
                                 patient.Gestation,
                                 patient.Birthweight,
-                                // "<a href='#' class='btn btn-outline-primary btn-sm mt-2' title='View'><i class='fas fa-eye'></i></a>" +
                                 "<button class='btn btn-outline-success btn-sm mt-2 btn_edit' title='Edit' value='" +
                                 patient.id + "'><i class='fas fa-edit'></i></button>" +
                                 "<button type='submit' class='btn btn-outline-danger btn-sm mt-2 btn_del' title='Delete' value='" +
                                 patient.id + "'><i class='fas fa-trash-alt'></i></button>"
                             ];
-
-                            // Add the row data and redraw the table
-                            table.row.add(rowData).draw(false);
+                            rows.push(rowData);
                         });
+
+                        table.rows.add(rows).draw(false); // Add new rows and redraw the table
                     },
                     error: function() {
                         console.error("Error fetching data.");
@@ -659,361 +657,335 @@
                 });
             }
             // Call the function to populate the table initially
-            fetchPatients();
+            fetchPatients(table);
 
+            //Check validation of the form
+            $(function() {
+                var $cil = $('#cil');
+                var $whci = $('#whci');
+                var $hcai = $('#hcai');
+                var $hcaiw = $('#hcaiw');
+                var $mede = $('#mede');
+                var $whmede = $('#whmede');
+                var $ven = $('#ven');
+                var $vent = $('#vent');
+                var $inot = $('#inot');
+                var $inoth = $('#inoth');
+                var $surg = $('#surg');
+                var $dos = $('#dos');
+                var $tos = $('#tos');
 
-
-            // Check the validition of the form
-            $('#fmdata').validate({
-                rules: {
-                    pid: {
-                        required: true,
-                    },
-                    dob: {
-                        required: true,
-                        date: true,
-                    },
-                    sex: {
-                        required: true,
-                    },
-                    province: {
-                        required: true,
-                    },
-                    doa: {
-                        required: true,
-                        date: true,
-                    },
-                    dod: {
-                        required: true,
-                        date: true,
-                    },
-                    ward: {
-                        required: true,
-                    },
-                    deoa: {
-                        required: true,
-                    },
-                    cod: {
-                        required: true,
-                    },
-                    cil: {
-                        required: true,
-                    },
-                    whci: {
-                        required: function(element) {
-                            return $('#cil').val() === 'Y';
-                        }
-                    },
-                    hcai: {
-                        required: true,
-                    },
-                    hcaiw: {
-                        required: function(element) {
-                            return $('#hcai').val() === 'Y';
-                        }
-                    },
-                    lap: {
-                        required: true,
-                    },
-                    pac: {
-                        required: true,
-                    },
-                    mede: {
-                        required: true,
-                    },
-                    whmede: {
-                        required: function(element) {
-                            return $('#mede').val() === 'Y';
-                        }
-                    },
-                    ven: {
-                        required: true,
-                    },
-                    vent: {
-                        required: function(element) {
-                            return $('#ven').val() === 'Y';
-                        }
-                    },
-                    inot: {
-                        required: true,
-                    },
-                    inoth: {
-                        required: function(element) {
-                            return $('#inot').val() === 'Y';
-                        }
-                    },
-                    surg: {
-                        required: true,
-                    },
-                    dos: {
-                        required: function(element) {
-                            return $('#surg').val() === 'Y';
+                $('#fmdata').validate({
+                    rules: {
+                        pid: {
+                            required: true
                         },
-                        date: true,
-                    },
-                    tos: {
-                        required: function(element) {
-                            return $('#surg').val() === 'Y';
+                        dob: {
+                            required: true,
+                            date: true
                         },
+                        sex: {
+                            required: true
+                        },
+                        province: {
+                            required: true
+                        },
+                        doa: {
+                            required: true,
+                            date: true
+                        },
+                        dod: {
+                            required: true,
+                            date: true
+                        },
+                        ward: {
+                            required: true
+                        },
+                        deoa: {
+                            required: true
+                        },
+                        cod: {
+                            required: true
+                        },
+                        cil: {
+                            required: true
+                        },
+                        whci: {
+                            required: function(element) {
+                                return $cil.val() === 'Y';
+                            }
+                        },
+                        hcai: {
+                            required: true
+                        },
+                        hcaiw: {
+                            required: function(element) {
+                                return $hcai.val() === 'Y';
+                            }
+                        },
+                        lap: {
+                            required: true
+                        },
+                        pac: {
+                            required: true
+                        },
+                        mede: {
+                            required: true
+                        },
+                        whmede: {
+                            required: function(element) {
+                                return $mede.val() === 'Y';
+                            }
+                        },
+                        ven: {
+                            required: true
+                        },
+                        vent: {
+                            required: function(element) {
+                                return $ven.val() === 'Y';
+                            }
+                        },
+                        inot: {
+                            required: true
+                        },
+                        inoth: {
+                            required: function(element) {
+                                return $inot.val() === 'Y';
+                            }
+                        },
+                        surg: {
+                            required: true
+                        },
+                        dos: {
+                            required: function(element) {
+                                return $surg.val() === 'Y';
+                            },
+                            date: true
+                        },
+                        tos: {
+                            required: function(element) {
+                                return $surg.val() === 'Y';
+                            }
+                        },
+                        ges: {
+                            integer: true
+                        },
+                        birthw: {
+                            number: true
+                        }
                     },
-                    ges: {
-                        integer: true,
+                    messages: {
+                        pid: {
+                            required: "Please enter a Patient ID"
+                        },
+                        dob: {
+                            required: "Please enter a Date of Birth",
+                            date: "Please enter a valid date"
+                        },
+                        sex: {
+                            required: "Please select a Sex"
+                        },
+                        province: {
+                            required: "Please select a Province"
+                        },
+                        doa: {
+                            required: "Please enter a Date/Time of Admission",
+                            date: "Please enter a valid date/time"
+                        },
+                        dod: {
+                            required: "Please enter a Date/Time of Death",
+                            date: "Please enter a valid date/time"
+                        },
+                        ward: {
+                            required: "Please select a Ward"
+                        },
+                        deoa: {
+                            required: "Please select an option for Dead on Arrival"
+                        },
+                        cod: {
+                            required: "Please enter a Cause of Death"
+                        },
+                        cil: {
+                            required: "Please select an option for Chronic Illness"
+                        },
+                        whci: {
+                            required: "Please enter the Chronic Illness"
+                        },
+                        hcai: {
+                            required: "Please select an option for HCAI"
+                        },
+                        hcaiw: {
+                            required: "Please enter the source of HCAI"
+                        },
+                        lap: {
+                            required: "Please select an option for Late Presentation"
+                        },
+                        pac: {
+                            required: "Please select an option for Palliative Care"
+                        },
+                        mede: {
+                            required: "Please select an option for Medical Error"
+                        },
+                        whmede: {
+                            required: "Please enter the Medical Error"
+                        },
+                        ven: {
+                            required: "Please select an option for Ventilation"
+                        },
+                        vent: {
+                            required: "Please enter the number of days ventilated"
+                        },
+                        inot: {
+                            required: "Please select an option for Inotropes"
+                        },
+                        inoth: {
+                            required: "Please enter the number of hours on Inotropes"
+                        },
+                        surg: {
+                            required: "Please select an option for Surgery"
+                        },
+                        dos: {
+                            required: "Please enter the Date of Surgery",
+                            date: "Please enter a valid date"
+                        },
+                        tos: {
+                            required: "Please enter the Type of Surgery"
+                        },
+                        ges: {
+                            integer: "Please enter a valid integer value for Gestation"
+                        },
+                        birthw: {
+                            number: "Please enter a valid numeric value for Birthweight"
+                        }
                     },
-                    birthw: {
-                        number: true,
+                    errorElement: 'span',
+                    errorPlacement: function(error, element) {
+                        error.addClass('invalid-feedback');
+                        element.closest('.form-group').append(error);
                     },
-                },
-                messages: {
-                    pid: {
-                        required: "Please enter a Patient ID",
+                    highlight: function(element, errorClass, validClass) {
+                        $(element).addClass('is-invalid');
                     },
-                    dob: {
-                        required: "Please enter a Date of Birth",
-                        date: "Please enter a valid date",
-                    },
-                    sex: {
-                        required: "Please select a Sex",
-                    },
-                    province: {
-                        required: "Please select a Province",
-                    },
-                    doa: {
-                        required: "Please enter a Date/Time of Admission",
-                        date: "Please enter a valid date/time",
-                    },
-                    dod: {
-                        required: "Please enter a Date/Time of Death",
-                        date: "Please enter a valid date/time",
-                    },
-                    ward: {
-                        required: "Please select a Ward",
-                    },
-                    deoa: {
-                        required: "Please select an option for Dead on Arrival",
-                    },
-                    cod: {
-                        required: "Please enter a Cause of Death",
-                    },
-                    cil: {
-                        required: "Please select an option for Chronic Illness",
-                    },
-                    whci: {
-                        required: "Please enter the Chronic Illness",
-                    },
-                    hcai: {
-                        required: "Please select an option for HCAI",
-                    },
-                    hcaiw: {
-                        required: "Please enter the source of HCAI",
-                    },
-                    lap: {
-                        required: "Please select an option for Late Presentation",
-                    },
-                    pac: {
-                        required: "Please select an option for Palliative Care",
-                    },
-                    mede: {
-                        required: "Please select an option for Medical Error",
-                    },
-                    whmede: {
-                        required: "Please enter the Medical Error",
-                    },
-                    ven: {
-                        required: "Please select an option for Ventilation",
-                    },
-                    vent: {
-                        required: "Please enter the number of days ventilated",
-                    },
-                    inot: {
-                        required: "Please select an option for Inotropes",
-                    },
-                    inoth: {
-                        required: "Please enter the number of hours on Inotropes",
-                    },
-                    surg: {
-                        required: "Please select an option for Surgery",
-                    },
-                    dos: {
-                        required: "Please enter the Date of Surgery",
-                        date: "Please enter a valid date",
-                    },
-                    tos: {
-                        required: "Please enter the Type of Surgery",
-                    },
-                    ges: {
-                        integer: "Please enter a valid integer value for Gestation",
-                    },
-                    birthw: {
-                        number: "Please enter a valid numeric value for Birthweight",
-                    },
-                },
-                errorElement: 'span',
-                errorPlacement: function(error, element) {
-                    error.addClass('invalid-feedback');
-                    element.closest('.form-group').append(error);
-                },
-                highlight: function(element, errorClass, validClass) {
-                    $(element).addClass('is-invalid');
-                },
-                unhighlight: function(element, errorClass, validClass) {
-                    $(element).removeClass('is-invalid');
-                }
-            });
-            $('#cil').change(function() {
-                if ($('#cil').val() === 'N') {
-                    $('#whci').removeClass('is-invalid');
-                }
-            });
-            $('#hcai').change(function() {
-                if ($('#hcai').val() === 'N') {
-                    $('#hcaiw').removeClass('is-invalid');
-                }
-            });
-            $('#mede').change(function() {
-                if ($('#mede').val() === 'N') {
-                    $('#whmede').removeClass('is-invalid');
-                }
-            });
-            $('#ven').change(function() {
-                if ($('#ven').val() === 'N') {
-                    $('#vent').removeClass('is-invalid');
-                }
-            });
-            $('#inot').change(function() {
-                if ($('#inot').val() === 'N') {
-                    $('#inoth').removeClass('is-invalid');
-                }
-            });
-            $('#surg').change(function() {
-                if ($('#surg').val() === 'N') {
-                    $('#dos').removeClass('is-invalid');
-                    $('#tos').removeClass('is-invalid');
-                }
+                    unhighlight: function(element, errorClass, validClass) {
+                        $(element).removeClass('is-invalid');
+                    }
+                });
+
+                $cil.change(function() {
+                    if ($cil.val() === 'N') {
+                        $whci.removeClass('is-invalid');
+                    }
+                });
+
+                $hcai.change(function() {
+                    if ($hcai.val() === 'N') {
+                        $hcaiw.removeClass('is-invalid');
+                    }
+                });
+
+                $mede.change(function() {
+                    if ($mede.val() === 'N') {
+                        $whmede.removeClass('is-invalid');
+                    }
+                });
+
+                $ven.change(function() {
+                    if ($ven.val() === 'N') {
+                        $vent.removeClass('is-invalid');
+                    }
+                });
+
+                $inot.change(function() {
+                    if ($inot.val() === 'N') {
+                        $inoth.removeClass('is-invalid');
+                    }
+                });
+
+                $surg.change(function() {
+                    if ($surg.val() === 'N') {
+                        $dos.removeClass('is-invalid');
+                        $tos.removeClass('is-invalid');
+                    }
+                });
             });
 
 
             // Submit the data if the form is valid
-            $('#fmdata').submit(function(e) {
+            $('#fmdata').on('submit', function(e) {
                 e.preventDefault();
 
-                if ($('#fmdata').valid()) {
+                var isValid = $('#fmdata').valid();
+                if (isValid) {
                     $.ajax({
-                        url: "{{ route('store.data') }}",
-                        type: "POST",
-                        data: $(this).serialize(),
-                        success: function(response) {
+                            url: "{{ route('store.data') }}",
+                            type: "POST",
+                            data: $('#fmdata').serializeArray(),
+                        })
+                        .done(function(response) {
                             // Handle the success response
-                            $('#fmdata')[0].reset();
+                            if ($('#fmdata').validate().resetForm) {
+                                $('#fmdata').validate().resetForm();
+                            } else {
+                                $('#fmdata')[0].reset();
+                            }
                             $('#modal_add').modal('hide');
                             if (response.success) {
                                 toastr.success(response.message);
                             }
-                            fetchPatients();
-                        },
-                        error: function(xhr) {
+                            fetchPatients(table);
+                        })
+                        .fail(function(xhr) {
                             // Handle the error response
                             toastr.error('Error while inserting. Please try again!');
-                        }
-                    });
+                        })
                 }
             });
 
+
             $(document).on('click', '.btn_edit', function(e) {
                 e.preventDefault();
-                var id = $(this).val();
-                $('#modal_edit').modal('show');
+                let $modal = $('#modal_edit');
+                let id = $(this).val();
+                $modal.modal('show');
+
                 $.ajax({
                     type: "GET",
                     url: "/dashboard/" + id,
-                    success: function(response) {
-
-                        if (response.success) {
-                            // Declare variables
+                })
+                .done(function(response){
+                    if (response.success) {
                             let data = response.patient;
-
-                            // Set the value of #uid to data.id
-                            $('#uid').val(data.id);
-
-                            // Set the value of #upid to data.Patient_ID
-                            $('#upid').val(data.Patient_ID);
-
-                            // Set the value of #udob to data.DOB
-                            $('#udob').val(data.DOB);
-
-                            // Set the value of #usex to data.Sex
-                            $('#usex').val(data.Sex);
-
-                            // Set the value of #uprovince to data.Province
-                            $('#uprovince').val(data.Province);
-
-                            // Set the value of #udoa to data.Date_Time_Of_Adminssion
-                            $('#udoa').val(data.Date_Time_Of_Adminssion);
-
-                            // Set the value of #udod to data.Date_Time_Of_Death
-                            $('#udod').val(data.Date_Time_Of_Death);
-
-                            // Set the value of #uward to data.Ward
-                            $('#uward').val(data.Ward);
-
-                            // Set the value of #udeoa to data.Dead_on_Arrival
-                            $('#udeoa').val(data.Dead_on_Arrival);
-
-                            // Set the value of #ucod to data.Cause_of_Death
-                            $('#ucod').val(data.Cause_of_Death);
-
-                            // Set the value of #ucil to data.Chronic_Illness
-                            $('#ucil').val(data.Chronic_Illness);
-
-                            // Set the value of #uwhci to data.What_Chronic_Illness
-                            $('#uwhci').val(data.What_Chronic_Illness);
-
-                            // Set the value of #uhcai to data.HCAI
-                            $('#uhcai').val(data.HCAI);
-
-                            // Set the value of #uhcaiw to data.HCAI_From_Where
-                            $('#uhcaiw').val(data.HCAI_From_Where);
-
-                            // Set the value of #ulap to data.Late_Presentation
-                            $('#ulap').val(data.Late_Presentation);
-
-                            // Set the value of #upac to data.Palliative_Care
-                            $('#upac').val(data.Palliative_Care);
-
-                            // Set the value of #umede to data.Medical_Error
-                            $('#umede').val(data.Medical_Error);
-
-                            // Set the value of #uwhmede to data.What_Medical_Error
-                            $('#uwhmede').val(data.What_Medical_Error);
-
-                            // Set the value of #uven to data.Ventilation
-                            $('#uven').val(data.Ventilation);
-
-                            // Set the value of #uvent to data.Ventilated_Days
-                            $('#uvent').val(data.Ventilated_Days);
-
-                            // Set the value of #uinot to data.Inotropes
-                            $('#uinot').val(data.Inotropes);
-
-                            // Set the value of #uinoth to data.Inotropes_Hours
-                            $('#uinoth').val(data.Inotropes_Hours);
-
-                            // Set the value of #usurg to data.Surgery
-                            $('#usurg').val(data.Surgery);
-
-                            // Set the value of #udos to data.Date_of_Surgery
-                            $('#udos').val(data.Date_of_Surgery);
-
-                            // Set the value of #utos to data.Type_of_Surgery
-                            $('#utos').val(data.Type_of_Surgery);
-
-                            // Set the value of #uges to data.Gestation
-                            $('#uges').val(data.Gestation);
-
-                            // Set the value of #ubirthw to data.Birthweight
-                            $('#ubirthw').val(data.Birthweight);
+                            
+                            // Set the value to the fields in the modal
+                            $modal.find('#uid').val(data.id);
+                            $modal.find('#upid').val(data.Patient_ID);
+                            $modal.find('#udob').val(data.DOB);
+                            $modal.find('#usex').val(data.Sex);
+                            $modal.find('#uprovince').val(data.Province);
+                            $modal.find('#udoa').val(data.Date_Time_Of_Adminssion);
+                            $modal.find('#udod').val(data.Date_Time_Of_Death);
+                            $modal.find('#uward').val(data.Ward);
+                            $modal.find('#udeoa').val(data.Dead_on_Arrival);
+                            $modal.find('#ucod').val(data.Cause_of_Death);
+                            $modal.find('#ucil').val(data.Chronic_Illness);
+                            $modal.find('#uwhci').val(data.What_Chronic_Illness);
+                            $modal.find('#uhcai').val(data.HCAI);
+                            $modal.find('#uhcaiw').val(data.HCAI_From_Where);
+                            $modal.find('#ulap').val(data.Late_Presentation);
+                            $modal.find('#upac').val(data.Palliative_Care);
+                            $modal.find('#umede').val(data.Medical_Error);
+                            $modal.find('#uwhmede').val(data.What_Medical_Error);
+                            $modal.find('#uven').val(data.Ventilation);
+                            $modal.find('#uvent').val(data.Ventilated_Days);
+                            $modal.find('#uinot').val(data.Inotropes);
+                            $modal.find('#uinoth').val(data.Inotropes_Hours);
+                            $modal.find('#usurg').val(data.Surgery);
+                            $modal.find('#udos').val(data.Date_of_Surgery);
+                            $modal.find('#utos').val(data.Type_of_Surgery);
+                            $modal.find('#uges').val(data.Gestation);
+                            $modal.find('#ubirthw').val(data.Birthweight);
                         }
-                    }
-                });
+                })    
             });
 
             // Check the update validition of the form
@@ -1260,7 +1232,7 @@
                             if (response.success) {
                                 toastr.success(response.message);
                             }
-                            fetchPatients();
+                            fetchPatients(table);
                         },
                         error: function(xhr) {
                             // Handle the error response
@@ -1271,39 +1243,47 @@
             });
 
 
+            // Click on the delete button
             $(document).on('click', '.btn_del', function(e) {
-
                 e.preventDefault();
-
                 let id = $(this).val();
-                // Set the form action URL with the patient ID
-                $('#fmdel').attr('action', '/dashboard/' + id);
-                $('#modal_del').modal('show');
-                $('#patient_id').val(id);
+                let formAction = '/dashboard/' + id;
+                let $modalDel = $('#modal_del');
+                let $patientId = $('#patient_id');
 
+                // Set the form action URL with the patient ID
+                $('#fmdel').attr('action', formAction);
+
+                // Show the modal and set the patient ID value
+                $modalDel.modal('show');
+                $patientId.val(id);
             });
 
-            //Submit the delete data
+            // Submit the delete data
             $('#fmdel').submit(function(e) {
-
                 e.preventDefault();
+                let $form = $(this);
+                let actionUrl = $form.attr('action');
+                let formData = $form.serialize();
+                let $modalDel = $('#modal_del');
 
+                // Make an asynchronous AJAX request
                 $.ajax({
-                    url: $(this).attr('action'), // Get the action URL from the form
-                    type: "POST",
-                    data: $(this).serialize(), // Serialize the form data
-                    success: function(response) {
+                        url: actionUrl,
+                        type: "POST",
+                        data: formData,
+                    })
+                    .done(function(response) {
                         // Handle the success response
-                        $('#modal_del').modal('hide');
+                        $modalDel.modal('hide');
                         if (response.success) {
                             toastr.success(response.message);
                         }
-                        fetchPatients();
-                    },
-                    error: function(xhr) {
+                        fetchPatients(table);
+                    })
+                    .fail(function(xhr) {
                         toastr.error('Error while deleting. Please try again!');
-                    }
-                });
+                    })
             });
 
             // Automatically close the success alert after 5 seconds
@@ -1317,16 +1297,19 @@
             });
 
             // Use jQuery to prevent form submission if the file input is empty
-            $('#importForm').submit(function() {
-                var allowedExtensions = ["xls", "xlsx"];
-                var fileExtension = $('#file').val().split('.').pop().toLowerCase();
-                if ($('#file').get(0).files.length === 0 || $.inArray(fileExtension, allowedExtensions) ===
-                    -1) {
-                    $('#file').addClass('is-invalid'); // Add Bootstrap invalid class
-                    $('.invalid-feedback').show(); // Show the error message
-                    return false; // Prevent form submission
+            $('#importForm').on('submit', function(event) {
+                var allowedExtensions = new Set(["xls", "xlsx"]);
+                var fileInput = $('#file')[0];
+                var fileExtension = fileInput.files[0]?.name.split('.').pop().toLowerCase();
+
+                if (fileInput.files.length === 0 || !allowedExtensions.has(fileExtension)) {
+                    event.preventDefault(); // Prevent form submission
+                    $('#file').addClass('is-invalid');
+                    $('.invalid-feedback').show();
+                    return false;
                 }
-                return true; // Allow form submission
+
+                return true; // Allow form submission if the conditions are met
             });
         });
     </script>
